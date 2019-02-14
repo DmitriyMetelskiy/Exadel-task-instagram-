@@ -1,0 +1,17 @@
+commit 66cb8a8d549cd97fb10cb2aaaf2015f8d4afecad (HEAD -> master)
+Author: Dmitriy <dmitriy_metelskiy@mail.ru>
+Date:   Fri Feb 15 00:04:57 2019 +0300
+
+    add task1/status.txt
+
+commit 9e04ff3e1f6d95eeb08eba7fd12cde6c9cb6d3a1
+Author: Dmitriy <dmitriy_metelskiy@mail.ru>
+Date:   Thu Feb 14 23:47:26 2019 +0300
+
+    add .gitignore
+
+commit ba1061ac647fdbc2cae93489f183e6e47b8a1f93 (origin/master, origin/HEAD)
+Author: Dmitriy Metelskiy <dmitriy_metelskiy@mail.ru>
+Date:   Tue Feb 12 11:07:37 2019 +0300
+
+    Initial commit
