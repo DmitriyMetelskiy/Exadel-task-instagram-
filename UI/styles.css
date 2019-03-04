@@ -44,7 +44,7 @@ body {
     text-align: center;
 }
 .main_publications {
-    margin-top: 1%;
+    margin-top: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -53,7 +53,7 @@ body {
 .post {
     background: rgba(255, 255, 255, 0.2);
     width: 70%;
-    margin: 0.5% 0;
+    margin: 5px 0;
     border: 2px ridge rgb(70, 190, 220);
     border-radius: 10px;
     text-align: left;
@@ -62,13 +62,13 @@ body {
     width: 60%;
     border-radius: 10px 0 0 10px;
 }
-.post_info img {
-    width: 5%;
+.post_info {
+    float:right;
+    width: 39%;
 }
-/*
-В доработке
-*/
-
+.post_info img {
+    width: 40px;
+}
 .footer {
     width: 100%;
     display: flex;
