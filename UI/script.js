@@ -86,10 +86,10 @@ var photoPosts = [
     },
     {
         id: '13',
-        descriprion: '',
-        createdAt: new Date('2018-02-23T23:00:00'),
+        descriprion: 'Columbus was not a scholarly man. Yet he studied these books, made hundreds of marginal notations in them and came out with ideas about the world that were characteristically simple and strong and sometimes wrong, ...',
+        createdAt: new Date('1451-10-31T23:00:00'),
         author: 'Christopher Columbus',
-        photoLink: ''
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Christopher_Columbus_at_the_gates_of_the_monastery_of_Santa_Maria_de_la_Rabida_with_his_son_Diego.jpg/170px-Christopher_Columbus_at_the_gates_of_the_monastery_of_Santa_Maria_de_la_Rabida_with_his_son_Diego.jpg'
     },
     {
         id: '14',
@@ -114,10 +114,10 @@ var photoPosts = [
     },
     {
         id: '17',
-        descriprion: '',
-        createdAt: new Date('2018-02-23T23:00:00'),
+        descriprion: 'For nine days I was as one lost, without hope of life. Eyes never beheld the sea so angry, so high, so covered with foam. The wind not only prevented our progress, but offered no opportunity to run behind any headland for shelter; hence we were forced to keep out in this bloody ocean, seething like a pot on a hot fire.',
+        createdAt: new Date('1453-07-21T23:00:00'),
         author: 'Christopher Columbus',
-        photoLink: ''
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Portrait_of_a_Man%2C_Said_to_be_Christopher_Columbus.jpg/220px-Portrait_of_a_Man%2C_Said_to_be_Christopher_Columbus.jpg'
     },
     {
         id: '18',
@@ -142,9 +142,9 @@ var photoPosts = [
     },
     {
         id: '21',
-        descriprion: '',
-        createdAt: new Date('2018-02-23T23:00:00'),
+        descriprion: 'Vincent Willem van Gogh.',
+        createdAt: new Date('1853-03-30T23:00:00'),
         author: 'Vincent Van Gogh',
-        photoLink: ''
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg'
     },
 ];
