@@ -232,7 +232,7 @@
         if(typeof skip === "number" && !isNaN(skip) && skip >= 0 &&
             typeof top === "number" && !isNaN(top) && top >= 0 &&
              typeof filterConfig === "object" && filterConfig !== null) {
-            let res = photoPosts.slice(0, photoPosts.length);
+            let res = photoPosts.slice();
             if ('author' in filterConfig) {
                 res = res.filter((item) => item.author === filterConfig.author);
             }
@@ -250,6 +250,92 @@
         else {
             console.log("Error!");
         }
+    }
+    
+    function getPhotoPost(id) {
+        if(typeof id === 'string') {
+            let res = photoPosts.filter((item) => item.id === id)[0];
+            if(typeof res === 'undefined') {
+                console.log("Error!");
+            }
+            return res;
+        }
+        else {
+            console.log("Error!");
+        }
+    }
+
+    let photoPost1 = {
+        id: '20',
+        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: 'Abraham Lincoln',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    }
+    let photoPost2 = {
+        id: '25',
+        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: '',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    }
+    let photoPost3 = {
+        id: '25',
+        descriprion: '',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: 'Abraham Lincoln',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    }
+    let photoPost4 = {
+        id: '25',
+        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: 'Abraham Lincoln',
+        photoLink: '',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    }
+    let photoPost5 = {
+        id: '25',
+        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: 'Abraham Lincoln',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    }
+    let photoPost6 = {
+        id: '25',
+        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: 'Abraham Lincoln',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    }
+
+    function validatePhotoPost(photoPost) {
+        if ('id' in photoPost && 'descriprion' in photoPost && 'createdAt' in photoPost &&
+        'author' in photoPost && 'photoLink' in photoPost && 'hashTags' in photoPost && 'likes' in photoPost) {
+            if (typeof photoPost.id === 'string' && typeof photoPost.descriprion === 'string' && 
+            typeof photoPost.createdAt === 'object' && typeof photoPost.author === 'string' &&
+            typeof photoPost.photoLink === 'string' && typeof Array.isArray(photoPost.hashTags) &&
+            Array.isArray(photoPost.likes)) {
+                if (typeof photoPosts.filter((item) => item.id === photoPost.id)[0] === 'undefined' &&
+                photoPost.descriprion.length < 200 && photoPost.author !== '' && photoPost.photoLink !== '') {
+                    if (photoPost.hashTags.filter((item) => typeof item !== 'string').length === 0 && 
+                    photoPost.likes.filter((item) => typeof item !== 'string').length === 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 // Тестовые запуски для getPhotoPosts(...);
@@ -271,5 +357,16 @@
 //    console.log(getPhotoPosts(3, 6, filter6));  // 14, 18, 16, 8, 6, 17
 
 // Тестовые запуски для getPhotoPost(...);
+//    console.log(getPhotoPost('0')); // Error!
+//    console.log(getPhotoPost(14));  // Error!
+//    console.log(getPhotoPost('14'));    // 14
+
+// Тестовые запуски для validatePhotoPost(...);
+//    console.log(validatePhotoPost(photoPost1)); // false
+//    console.log(validatePhotoPost(photoPost2)); // false
+//    console.log(validatePhotoPost(photoPost3)); // true
+//    console.log(validatePhotoPost(photoPost4)); // false
+//    console.log(validatePhotoPost(photoPost5)); // false
+//    console.log(validatePhotoPost(photoPost6)); // true
 
 }());
