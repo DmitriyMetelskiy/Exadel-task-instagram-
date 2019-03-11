@@ -365,7 +365,8 @@
         photoLink: 'http://haradok.info/static/news/5/4565/preview.jpg'
     }
     let editor2 = {
-        author: 'abcda'
+        author: 'abcda',
+        hashTags: ['new like', 'edited like']
     }
 
     function editPhotoPost(id, photoPost) {
@@ -461,39 +462,39 @@
 
 //    console.log('=========================');
 // Тестовые запуски для editPhotoPost(...);
-
-    console.log(getPhotoPost('1'));
-    console.log(editPhotoPost('1', photoPost1)); // 
-    console.log(getPhotoPost('1'));
 /*
+    console.log(getPhotoPost('1'));
+    console.log(editPhotoPost('1', editor1)); // true
+    console.log(getPhotoPost('1'));
+
     console.log(getPhotoPost('5'));
-    console.log(editPhotoPost('5', photoPost2)); // 
+    console.log(editPhotoPost('5', editor2)); // true
     console.log(getPhotoPost('5'));
 
     console.log(getPhotoPost('6'));
-    console.log(editPhotoPost('6',photoPost3)); // 
+    console.log(editPhotoPost('6',photoPost3)); // true
     console.log(getPhotoPost('6'));
 
     console.log(getPhotoPost('12'));
-    console.log(editPhotoPost('12', photoPost4)); // 
+    console.log(editPhotoPost('12', photoPost4)); // true
     console.log(getPhotoPost('12'));
 
     console.log(getPhotoPost('20'));
-    console.log(editPhotoPost('20', photoPost5)); //
+    console.log(editPhotoPost('20', photoPosts[20])); // true
     console.log(getPhotoPost('20'));
 
     console.log(getPhotoPost('14'));
-    console.log(editPhotoPost('14', photoPost6)); //
+    console.log(editPhotoPost('14', photoPost6)); // true
     console.log(getPhotoPost('14'));
 */
 /*
     console.log('=========================');
 // Тестовые запуски для removePhotoPost(...);
-    console.log(removePhotoPost(photoPost1)); // 
-    console.log(removePhotoPost(photoPost2)); // 
-    console.log(removePhotoPost(photoPost3)); // 
-    console.log(removePhotoPost(photoPost4)); // 
-    console.log(removePhotoPost(photoPost5)); // 
-    console.log(removePhotoPost(photoPost6)); //
+    console.log(removePhotoPost('4')); // true
+    console.log(removePhotoPost('6')); // true
+    console.log(removePhotoPost('1')); // true
+    console.log(removePhotoPost('9')); // true
+    console.log(removePhotoPost('5')); // true
+    console.log(removePhotoPost('6')); // false, т.к. уже удалён
 */
 }());
