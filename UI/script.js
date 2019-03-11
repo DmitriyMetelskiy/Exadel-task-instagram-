@@ -475,9 +475,9 @@
     console.log(editPhotoPost('6',photoPost3)); // true
     console.log(getPhotoPost('6'));
 
-    console.log(getPhotoPost('12'));
-    console.log(editPhotoPost('12', photoPost4)); // true
-    console.log(getPhotoPost('12'));
+    console.log(getPhotoPost('25'));
+    console.log(editPhotoPost('25', photoPost4)); // false
+    console.log(getPhotoPost('25'));
 
     console.log(getPhotoPost('20'));
     console.log(editPhotoPost('20', photoPosts[20])); // true
