@@ -256,12 +256,14 @@
         if(typeof id === 'string') {
             let res = photoPosts.filter((item) => item.id === id)[0];
             if(typeof res === 'undefined') {
-                console.log("Error!");
+//                console.log("Error!");
+                return;
             }
             return res;
         }
         else {
-            console.log("Error!");
+//            console.log("Error!");
+            return;
         }
     }
 
@@ -311,25 +313,35 @@
     }
     let photoPost6 = {
         id: '25',
-        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
-        createdAt: new Date('1839-02-12T14:23:07'),
-        author: 'Abraham Lincoln',
+        descriprion: 'Newly added post[6]',
+        createdAt: new Date('2007-03-12T17:22:07'),
+        author: 'Abba',
         photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
-        hashTags: ['president', 'noslavery'],
+        hashTags: ['new', 'brand_new'],
         likes: []
     }
 
     function validatePhotoPost(photoPost) {
-        if ('id' in photoPost && 'descriprion' in photoPost && 'createdAt' in photoPost &&
-        'author' in photoPost && 'photoLink' in photoPost && 'hashTags' in photoPost && 'likes' in photoPost) {
-            if (typeof photoPost.id === 'string' && typeof photoPost.descriprion === 'string' && 
-            typeof photoPost.createdAt === 'object' && typeof photoPost.author === 'string' &&
-            typeof photoPost.photoLink === 'string' && typeof Array.isArray(photoPost.hashTags) &&
-            Array.isArray(photoPost.likes)) {
-                if (typeof photoPosts.filter((item) => item.id === photoPost.id)[0] === 'undefined' &&
-                photoPost.descriprion.length < 200 && photoPost.author !== '' && photoPost.photoLink !== '') {
-                    if (photoPost.hashTags.filter((item) => typeof item !== 'string').length === 0 && 
-                    photoPost.likes.filter((item) => typeof item !== 'string').length === 0) {
+        if (typeof photoPost === 'object') {
+            if ('id' in photoPost && 'descriprion' in photoPost && 'createdAt' in photoPost &&
+            'author' in photoPost && 'photoLink' in photoPost) {
+                if (typeof photoPost.id === 'string' && typeof photoPost.descriprion === 'string' && 
+                typeof photoPost.createdAt === 'object' && typeof photoPost.author === 'string' &&
+                typeof photoPost.photoLink === 'string') {
+                    if (typeof getPhotoPost(photoPost.id) === 'undefined' && photoPost.author !== '' &&
+                    photoPost.descriprion.length < 200 && photoPost.photoLink !== '') {
+                        if ('hashTags' in photoPost && Array.isArray(photoPost.hashTags)) {
+                            if (photoPost.hashTags.length !== 0 && 
+                            photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
+                                return false;
+                            }
+                        }
+                        if ('likes' in photoPost && Array.isArray(photoPost.likes)) {
+                            if (photoPost.likes.length !== 0 &&
+                            photoPost.likes.filter((item) => typeof item !== 'string').length !== 0) {
+                                return false;
+                            }
+                        }
                         return true;
                     }
                 }
@@ -338,6 +350,19 @@
         return false;
     }
 
+    function addPhotoPost(photoPost) {
+        if(validatePhotoPost(photoPost)) {
+            photoPosts.push(photoPost);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function editPhotoPost(id, photoPost) {
+
+    }
 // Тестовые запуски для getPhotoPosts(...);
 //    console.log(getPhotoPosts(null));   // Error!
 //    console.log(getPhotoPosts(0, null));    // Error!
@@ -362,11 +387,18 @@
 //    console.log(getPhotoPost('14'));    // 14
 
 // Тестовые запуски для validatePhotoPost(...);
-//    console.log(validatePhotoPost(photoPost1)); // false
-//    console.log(validatePhotoPost(photoPost2)); // false
-//    console.log(validatePhotoPost(photoPost3)); // true
-//    console.log(validatePhotoPost(photoPost4)); // false
-//    console.log(validatePhotoPost(photoPost5)); // false
-//    console.log(validatePhotoPost(photoPost6)); // true
-
+    console.log(validatePhotoPost(photoPost1)); // false
+    console.log(validatePhotoPost(photoPost2)); // false
+    console.log(validatePhotoPost(photoPost3)); // true
+    console.log(validatePhotoPost(photoPost4)); // false
+    console.log(validatePhotoPost(photoPost5)); // false
+    console.log(validatePhotoPost(photoPost6)); // true
+    console.log('=========================');
+// Тестовые запуски для addPhotoPost(...);
+    console.log(addPhotoPost(photoPost1)); // false
+    console.log(addPhotoPost(photoPost2)); // false
+    console.log(addPhotoPost(photoPost3)); // true
+    console.log(addPhotoPost(photoPost4)); // false
+    console.log(addPhotoPost(photoPost5)); // false
+    console.log(addPhotoPost(photoPost6)); // true
 }());
