@@ -360,9 +360,64 @@
         }
     }
 
-    function editPhotoPost(id, photoPost) {
-
+    let editor1 = {
+        descriprion: [],
+        photoLink: 'http://haradok.info/static/news/5/4565/preview.jpg'
     }
+    let editor2 = {
+        author: 'abcda'
+    }
+
+    function editPhotoPost(id, photoPost) {
+        let index = photoPosts.findIndex((item) => item.id === id);
+        if (index !== -1) {
+            let post = photoPosts[index];
+            if ('description' in photoPost) {
+                if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < 200) {
+                    post.descriprion = photoPost.descriprion;
+                }
+            }
+            if ('photoLink' in photoPost) {
+                if(typeof photoPost.photoLink === 'string' && photoPost.photoLink.length !== 0) {
+                    post.photoLink = photoPost.photoLink;
+                }
+            }
+            if ('hashTags' in photoPost && Array.isArray(photoPost.hashTags)) {
+                if (photoPost.hashTags.length !== 0 && 
+                photoPost.hashTags.filter((item) => typeof item !== 'string').length === 0) {
+                    post.hashTags = photoPost.hashTags.slice();
+                }
+                else if (photoPost.hashTags.length === 0) {
+                    post.hashTags = [];
+                }
+            }
+            if ('likes' in photoPost && Array.isArray(photoPost.likes)) {
+                if (photoPost.likes.length !== 0 &&
+                photoPost.likes.filter((item) => typeof item !== 'string').length === 0) {
+                    post.likes = photoPost.likes.slice();
+                }
+                else if (photoPost.likes.length === 0) {
+                    post.likes = [];
+                }
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function removePhotoPost(id) {
+        let index = photoPosts.findIndex((item) => item.id === id);
+        if (index !== -1) {
+            photoPosts.splice(index, 1);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 // Тестовые запуски для getPhotoPosts(...);
 //    console.log(getPhotoPosts(null));   // Error!
 //    console.log(getPhotoPosts(0, null));    // Error!
@@ -386,19 +441,59 @@
 //    console.log(getPhotoPost(14));  // Error!
 //    console.log(getPhotoPost('14'));    // 14
 
+//    console.log('=========================');
 // Тестовые запуски для validatePhotoPost(...);
-    console.log(validatePhotoPost(photoPost1)); // false
-    console.log(validatePhotoPost(photoPost2)); // false
-    console.log(validatePhotoPost(photoPost3)); // true
-    console.log(validatePhotoPost(photoPost4)); // false
-    console.log(validatePhotoPost(photoPost5)); // false
-    console.log(validatePhotoPost(photoPost6)); // true
-    console.log('=========================');
+//    console.log(validatePhotoPost(photoPost1)); // false
+//    console.log(validatePhotoPost(photoPost2)); // false
+//    console.log(validatePhotoPost(photoPost3)); // true
+//    console.log(validatePhotoPost(photoPost4)); // false
+//    console.log(validatePhotoPost(photoPost5)); // false
+//    console.log(validatePhotoPost(photoPost6)); // true
+
+//    console.log('=========================');
 // Тестовые запуски для addPhotoPost(...);
-    console.log(addPhotoPost(photoPost1)); // false
-    console.log(addPhotoPost(photoPost2)); // false
-    console.log(addPhotoPost(photoPost3)); // true
-    console.log(addPhotoPost(photoPost4)); // false
-    console.log(addPhotoPost(photoPost5)); // false
-    console.log(addPhotoPost(photoPost6)); // true
+//    console.log(addPhotoPost(photoPost1)); // false
+//    console.log(addPhotoPost(photoPost2)); // false
+//    console.log(addPhotoPost(photoPost3)); // true
+//    console.log(addPhotoPost(photoPost4)); // false
+//    console.log(addPhotoPost(photoPost5)); // false
+//    console.log(addPhotoPost(photoPost6)); // false, т.к. с таким id уже добавлен <photoPost3>.
+
+//    console.log('=========================');
+// Тестовые запуски для editPhotoPost(...);
+
+    console.log(getPhotoPost('1'));
+    console.log(editPhotoPost('1', photoPost1)); // 
+    console.log(getPhotoPost('1'));
+/*
+    console.log(getPhotoPost('5'));
+    console.log(editPhotoPost('5', photoPost2)); // 
+    console.log(getPhotoPost('5'));
+
+    console.log(getPhotoPost('6'));
+    console.log(editPhotoPost('6',photoPost3)); // 
+    console.log(getPhotoPost('6'));
+
+    console.log(getPhotoPost('12'));
+    console.log(editPhotoPost('12', photoPost4)); // 
+    console.log(getPhotoPost('12'));
+
+    console.log(getPhotoPost('20'));
+    console.log(editPhotoPost('20', photoPost5)); //
+    console.log(getPhotoPost('20'));
+
+    console.log(getPhotoPost('14'));
+    console.log(editPhotoPost('14', photoPost6)); //
+    console.log(getPhotoPost('14'));
+*/
+/*
+    console.log('=========================');
+// Тестовые запуски для removePhotoPost(...);
+    console.log(removePhotoPost(photoPost1)); // 
+    console.log(removePhotoPost(photoPost2)); // 
+    console.log(removePhotoPost(photoPost3)); // 
+    console.log(removePhotoPost(photoPost4)); // 
+    console.log(removePhotoPost(photoPost5)); // 
+    console.log(removePhotoPost(photoPost6)); //
+*/
 }());
