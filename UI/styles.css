@@ -1,4 +1,4 @@
-body {
+.body {
     min-width: 220px;
     padding: 0;
     margin: 0;
@@ -16,7 +16,7 @@ body {
     background: rgba(50, 255, 255, 0.2);
     border-radius: 0 0 50px 50px;
 }
-.header_logo a {
+.header__logo a {
     text-decoration: none;
     color: black;
     font-style: oblique;
@@ -24,32 +24,38 @@ body {
     font-size: xx-large;
     vertical-align: top;
 }
-.header_login {
+.header__home {
+}
+.header__add-photo {
+}
+.header__login {
     font-size: larger;
     display: none;
 }
-.header_user {
+.header__user {
     font-size: larger;
+    font-family: sans-serif;
+    font-style: oblique;
 }
-.header_user p {
+.header__user p {
     display: inline-block;
 }
 .header img {
     vertical-align: middle;
     max-height: 40px;
 }
-.checkbox:checked ~ .search_popup {
+.search-checkbox {
+    display: none;
+}
+.search-checkbox:checked ~ .search-popup {
     transform: translate(100%, 0);
     transition: all 0.5s ease-out;
 }
-.checkbox:not(:checked) ~ .search_popup {
+.search-checkbox:not(:checked) ~ .search-popup {
     transform: translate(-100%, 0);
     transition: all 0.5s ease-in;
 }
-input[type = "checkbox"] {
-    display: none;
-}
-.search_label img {
+.search-label img {
     position: absolute;
     top: 95px;
     left: 0;
@@ -59,7 +65,7 @@ input[type = "checkbox"] {
     background: rgba(70, 190, 220, 0.8);
     border-radius: 0 20px 20px 0;
 }
-.search_popup {
+.search-popup {
     position: absolute;
     top: 150px;
     left: -15%;
@@ -67,28 +73,45 @@ input[type = "checkbox"] {
     background: rgba(70, 190, 220, 0.8);
     border-radius: 0 20px 20px 0;
 }
-.search_popup h4 {
-    font-family: sans-serif;
+.search-popup__header {
     margin: 10px;
-}
-.search_popup h5 {
-    margin: 10px;
-    font-size: 15px;
+    font-size: larger;
     font-family: sans-serif;
+    font-style: oblique;
+    text-align: center;
 }
-.search_popup p {
-    margin: 0;
+.search-popup__date {
+    margin: 10px;
+    font-size: large;
+    font-family: sans-serif;
+    font-style: oblique;
+    text-align: center;
 }
-.search_popup input[type = "text"] {
+.search-popup__author-input {
     width: 90%;
     margin: 5px 5%;
     box-sizing: border-box;
 }
-.search_popup input[type = "button"] {
+.search-popup__hashtags-input {
+    width: 90%;
+    margin: 5px 5%;
+    box-sizing: border-box;
+}
+.search-popup__date-from-input {
+    width: 90%;
+    margin: 5px 5%;
+    box-sizing: border-box;
+}
+.search-popup__date-till-input {
+    width: 90%;
+    margin: 5px 5%;
+    box-sizing: border-box;
+}
+.search-popup__search-button {
     width: 90%;
     margin: 5px 5%;
 }
-.main_publications {
+.main__publications {
     margin-top: 5px;
     display: flex;
     flex-direction: column;
@@ -108,32 +131,32 @@ input[type = "checkbox"] {
     border-radius: 10px 0 0 10px;
     float: left;
 }
-.post_details {
+.post__details {
     width: 38%;
     padding: 1%;
     display: inline-block;
 }
-.post_details img {
+.post__details img {
     width: 100%;
     max-width: 83px;
 }
-.post_details h3 {
+.post__details h3 {
     font-family: sans-serif;
     margin: 0 0 1% 0;
 }
-.post_details p {
+.post__details p {
     margin: 1% 0;
 }
-.post_information {
+.post__information {
     max-height: 199px;
     overflow: auto;
 }
-.post_buttons {
+.post__buttons {
     margin: 2% 0;
     display: flex;
     justify-content: space-around;
 }
-.show_more_posts {
+.show-more-posts {
     margin: 10px 40%;
     width: 20%;
 }
@@ -147,8 +170,11 @@ input[type = "checkbox"] {
     flex-wrap: wrap;
     background: rgba(150, 140, 140, 0.5);
 }
-.footer_portal_name {
-    font-size: 1.2em;
+.footer__portal-name {
+    font-size: larger;
+    font-family: sans-serif;
+    font-style: oblique;
+    text-align: center;
 }
 @media all and (max-width: 940px) and (min-width: 640px) {
     .post {
@@ -162,7 +188,7 @@ input[type = "checkbox"] {
     .header img {
         max-height: 30px;
     }
-    .search_popup {
+    .search-popup {
         width: 95px;
         left: -95px;
     }
@@ -174,10 +200,10 @@ input[type = "checkbox"] {
         border-radius: 10px 10px 0 0;
         float: none;
     }
-    .post_details {
+    .post__details {
         width: 100%;
     }
-    .show_more_posts {
+    .show-more-posts {
         margin: 10px 30%;
         width: 40%;
     }
