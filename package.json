@@ -1,0 +1,22 @@
+{
+  "name": "Digal",
+  "version": "1.0.0",
+  "description": "University task(photoportal)",
+  "main": "script.js",
+  "scripts": {
+    "test": "node script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DmitriyMetelskiy/Exadel-task-instagram-.git"
+  },
+  "author": "Dmitriy Metelskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DmitriyMetelskiy/Exadel-task-instagram-/issues"
+  },
+  "homepage": "https://github.com/DmitriyMetelskiy/Exadel-task-instagram-#readme",
+  "devDependencies": {
+    "eslint": "^5.15.2"
+  }
+}

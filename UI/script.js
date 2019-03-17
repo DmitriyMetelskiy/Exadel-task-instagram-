@@ -1,4 +1,4 @@
-let Posts = (function() {
+(function() {
     let photoPosts = [
         {
             id: '1',
@@ -199,7 +199,7 @@ let Posts = (function() {
         author: 'Abraham Lincoln',
         hashTags: ['president'],
         date: {
-            from: new Date(1810, 01, 01),
+            from: new Date(1810, 1, 1),
             till: new Date(1840, 12, 31)
         }
     }
@@ -210,20 +210,20 @@ let Posts = (function() {
     let filter4 = { // 11
         hashTags: ['helicopter', 'engineer'],
         date: {
-            from: new Date(1450, 01, 01),
+            from: new Date(1450, 1, 1),
             till: new Date(1600, 12, 31)
         }
     }
     let filter5 = { // []
         hashTags: ['masterpiece'],
         date: {
-            from: new Date(1500, 01, 01),
+            from: new Date(1500, 1, 1),
             till: new Date(1600, 12, 31)
         }
     }
     let filter6 = { // 10, 21, 20, 14, 18, 16, 8, 6, 17, 11, 13
         date: {
-            from: new Date(1400, 01, 01),
+            from: new Date(1400, 1, 1),
             till: new Date(1900, 12, 31)
         }
     }
