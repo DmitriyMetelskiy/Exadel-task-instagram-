@@ -1,4 +1,4 @@
-(function() {
+let Posts = (function() {
     let photoPosts = [
         {
             id: '1',
@@ -233,13 +233,13 @@
             typeof top === "number" && !isNaN(top) && top >= 0 &&
              typeof filterConfig === "object" && filterConfig !== null) {
             let res = photoPosts.slice();
-            if ('author' in filterConfig) {
+            if (filterConfig.author) {
                 res = res.filter((item) => item.author === filterConfig.author);
             }
-            if('hashTags' in filterConfig) {
+            if(filterConfig.hashtags) {
                 res = res.filter((item) => filterConfig.hashTags.every((tag) => item.hashTags.includes(tag)));
             }
-            if('date' in filterConfig) {
+            if(filterConfig.date) {
                 res = res.filter((item) => item.createdAt >= filterConfig.date.from &&
                                             item.createdAt <= filterConfig.date.till);
             }
@@ -248,23 +248,19 @@
             return res;
         }
         else {
-            console.log("Error!");
+            return;
         }
     }
     
     function getPhotoPost(id) {
-        if(typeof id === 'string') {
-            let res = photoPosts.filter((item) => item.id === id)[0];
-            if(typeof res === 'undefined') {
-//                console.log("Error!");
-                return;
-            }
-            return res;
-        }
-        else {
-//            console.log("Error!");
+        if(typeof id !== 'string') {
             return;
         }
+        let index = photoPosts.findIndex((item) => item.id === id);
+        if(index === -1) {
+            return;
+        }
+        return photoPosts[index];
     }
 
     let photoPost1 = {
@@ -322,21 +318,21 @@
     }
 
     function validatePhotoPost(photoPost) {
-        if (typeof photoPost === 'object') {
-            if ('id' in photoPost && 'descriprion' in photoPost && 'createdAt' in photoPost &&
-            'author' in photoPost && 'photoLink' in photoPost) {
+        if (typeof photoPost === 'object' && photoPost !== null) {
+            if (photoPost.id && photoPost.descriprion && photoPost.createdAt && photoPost.author &&
+            photoPost.photoLink) {
                 if (typeof photoPost.id === 'string' && typeof photoPost.descriprion === 'string' && 
                 typeof photoPost.createdAt === 'object' && typeof photoPost.author === 'string' &&
                 typeof photoPost.photoLink === 'string') {
                     if (typeof getPhotoPost(photoPost.id) === 'undefined' && photoPost.author !== '' &&
                     photoPost.descriprion.length < 200 && photoPost.photoLink !== '') {
-                        if ('hashTags' in photoPost && Array.isArray(photoPost.hashTags)) {
+                        if (Array.isArray(photoPost.hashTags)) {
                             if (photoPost.hashTags.length !== 0 && 
                             photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
                                 return false;
                             }
                         }
-                        if ('likes' in photoPost && Array.isArray(photoPost.likes)) {
+                        if (Array.isArray(photoPost.likes)) {
                             if (photoPost.likes.length !== 0 &&
                             photoPost.likes.filter((item) => typeof item !== 'string').length !== 0) {
                                 return false;
@@ -371,41 +367,33 @@
 
     function editPhotoPost(id, photoPost) {
         let index = photoPosts.findIndex((item) => item.id === id);
-        if (index !== -1) {
-            let post = photoPosts[index];
-            if ('description' in photoPost) {
-                if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < 200) {
-                    post.descriprion = photoPost.descriprion;
-                }
-            }
-            if ('photoLink' in photoPost) {
-                if(typeof photoPost.photoLink === 'string' && photoPost.photoLink.length !== 0) {
-                    post.photoLink = photoPost.photoLink;
-                }
-            }
-            if ('hashTags' in photoPost && Array.isArray(photoPost.hashTags)) {
-                if (photoPost.hashTags.length !== 0 && 
-                photoPost.hashTags.filter((item) => typeof item !== 'string').length === 0) {
-                    post.hashTags = photoPost.hashTags.slice();
-                }
-                else if (photoPost.hashTags.length === 0) {
-                    post.hashTags = [];
-                }
-            }
-            if ('likes' in photoPost && Array.isArray(photoPost.likes)) {
-                if (photoPost.likes.length !== 0 &&
-                photoPost.likes.filter((item) => typeof item !== 'string').length === 0) {
-                    post.likes = photoPost.likes.slice();
-                }
-                else if (photoPost.likes.length === 0) {
-                    post.likes = [];
-                }
-            }
-            return true;
-        }
-        else {
+        if (index === -1) {
             return false;
         }
+        let post = photoPosts[index];
+        if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < 200) {
+            post.descriprion = photoPost.descriprion;
+        }
+        if(typeof photoPost.photoLink === 'string' && photoPost.photoLink.length !== 0) {
+            post.photoLink = photoPost.photoLink;
+        }
+        if (Array.isArray(photoPost.hashTags)) {
+            if (photoPost.hashTags.length === 0) {
+                post.hashTags = [];
+            }
+            else if (photoPost.hashTags.filter((item) => typeof item !== 'string').length === 0) {
+                post.hashTags = photoPost.hashTags.slice();
+            }
+        }
+        if (Array.isArray(photoPost.likes)) {
+            if (photoPost.likes.length === 0) {
+                post.likes = [];
+            }
+            else if (photoPost.likes.filter((item) => typeof item !== 'string').length === 0) {
+                post.likes = photoPost.likes.slice();
+            }
+        }
+        return true;
     }
 
     function removePhotoPost(id) {
@@ -437,32 +425,32 @@
 //    console.log(getPhotoPosts(0, 21, filter6)); // 10, 21, 20, 14, 18, 16, 8, 6, 17, 11, 13
 //    console.log(getPhotoPosts(3, 6, filter6));  // 14, 18, 16, 8, 6, 17
 
+/*    console.log('=========================');
 // Тестовые запуски для getPhotoPost(...);
-//    console.log(getPhotoPost('0')); // Error!
-//    console.log(getPhotoPost(14));  // Error!
-//    console.log(getPhotoPost('14'));    // 14
-
-//    console.log('=========================');
+    console.log(getPhotoPost('0')); // undefined
+    console.log(getPhotoPost(14));  // undefined
+    console.log(getPhotoPost('14'));    // 14
+*/
+/*    console.log('=========================');
 // Тестовые запуски для validatePhotoPost(...);
-//    console.log(validatePhotoPost(photoPost1)); // false
-//    console.log(validatePhotoPost(photoPost2)); // false
-//    console.log(validatePhotoPost(photoPost3)); // true
-//    console.log(validatePhotoPost(photoPost4)); // false
-//    console.log(validatePhotoPost(photoPost5)); // false
-//    console.log(validatePhotoPost(photoPost6)); // true
-
-//    console.log('=========================');
+    console.log(validatePhotoPost(photoPost1)); // false
+    console.log(validatePhotoPost(photoPost2)); // false
+    console.log(validatePhotoPost(photoPost3)); // true
+    console.log(validatePhotoPost(photoPost4)); // false
+    console.log(validatePhotoPost(photoPost5)); // false
+    console.log(validatePhotoPost(photoPost6)); // true
+*/
+/*    console.log('=========================');
 // Тестовые запуски для addPhotoPost(...);
-//    console.log(addPhotoPost(photoPost1)); // false
-//    console.log(addPhotoPost(photoPost2)); // false
-//    console.log(addPhotoPost(photoPost3)); // true
-//    console.log(addPhotoPost(photoPost4)); // false
-//    console.log(addPhotoPost(photoPost5)); // false
-//    console.log(addPhotoPost(photoPost6)); // false, т.к. с таким id уже добавлен <photoPost3>.
-
-//    console.log('=========================');
+    console.log(addPhotoPost(photoPost1)); // false
+    console.log(addPhotoPost(photoPost2)); // false
+    console.log(addPhotoPost(photoPost3)); // true
+    console.log(addPhotoPost(photoPost4)); // false
+    console.log(addPhotoPost(photoPost5)); // false
+    console.log(addPhotoPost(photoPost6)); // false, т.к. с таким id уже добавлен <photoPost3>.
+*/
+/*    console.log('=========================');
 // Тестовые запуски для editPhotoPost(...);
-/*
     console.log(getPhotoPost('1'));
     console.log(editPhotoPost('1', editor1)); // true
     console.log(getPhotoPost('1'));
@@ -487,8 +475,7 @@
     console.log(editPhotoPost('14', photoPost6)); // true
     console.log(getPhotoPost('14'));
 */
-/*
-    console.log('=========================');
+/*    console.log('=========================');
 // Тестовые запуски для removePhotoPost(...);
     console.log(removePhotoPost('4')); // true
     console.log(removePhotoPost('6')); // true
