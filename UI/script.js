@@ -182,6 +182,15 @@ let photoPosts = [
 ];
 let photoPosts2 = [
     {
+        id: '20',
+        descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+        createdAt: new Date('1839-02-12T14:23:07'),
+        author: 'Abraham Lincoln',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
+        hashTags: ['president', 'noslavery'],
+        likes: []
+    },
+    {
         id: '21',
         descriprion: 'Vincent Willem van Gogh.',
         createdAt: new Date('1853-03-30T19:15:26'),
@@ -304,14 +313,14 @@ const MAX_DESCRIPTION_LENGTH = 200;
 
 class PhotoList {
     constructor(photoPosts) {
-        this.posts = photoPosts.slice();
+        this._posts = photoPosts.slice();
     }
 
     getPosts(skip = 0, top = 10, filterConfig = {}) {
         if(typeof skip === "number" && !isNaN(skip) && skip >= 0 &&
             typeof top === "number" && !isNaN(top) && top >= 0 &&
              typeof filterConfig === "object" && filterConfig !== null) {
-            let res = this.posts.slice();
+            let res = this._posts.slice();
             if (filterConfig.author) {
                 res = res.filter((item) => item.author === filterConfig.author);
             }
@@ -335,15 +344,15 @@ class PhotoList {
         if(typeof id !== 'string') {
             return;
         }
-        let index = this.posts.findIndex((item) => item.id === id);
+        let index = this._posts.findIndex((item) => item.id === id);
         if(index === -1) {
             return;
         }
-        return this.posts[index];
+        return this._posts[index];
     }
 
     _validateID(id) {
-        if(this.posts.findIndex((item) => item.id === id) === -1) {
+        if(this._posts.findIndex((item) => item.id === id) === -1) {
             return true;
         }
         return false;
@@ -380,7 +389,7 @@ class PhotoList {
 
     add(post) {
         if(PhotoList.validate(post) && this._validateID(post.id)) {
-            this.posts.push(post);
+            this._posts.push(post);
             return true;
         }
         else {
@@ -389,11 +398,11 @@ class PhotoList {
     }
 
     edit(id, photoPost) {
-        let index = this.posts.findIndex((item) => item.id === id);
+        let index = this._posts.findIndex((item) => item.id === id);
         if (index === -1) {
             return false;
         }
-        let post = this.posts[index];
+        let post = this._posts[index];
         if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < MAX_DESCRIPTION_LENGTH) {
             post.descriprion = photoPost.descriprion;
         }
@@ -420,17 +429,31 @@ class PhotoList {
     }
 
     remove(id) {
-        let index = this.posts.findIndex((item) => item.id === id);
+        let index = this._posts.findIndex((item) => item.id === id);
         if (index !== -1) {
-            this.posts.splice(index, 1);
+            this._posts.splice(index, 1);
             return true;
         }
         else {
             return false;
         }
     }
+
+    addAll(postArray) {
+        let notAdded = [];
+        if(!Array.isArray(postArray)) {
+            return [];
+        }
+        postArray.forEach((post) => {
+            if(!this.add(post)) {
+                notAdded.push(post);
+            }
+        });
+        return notAdded;
+    }
 }
 let pl = new PhotoList(photoPosts);
+console.log(pl.addAll(photoPosts2));    // 20 (from photoPosts)
 
 // Тестовые запуски для getPhotoPosts(...);
 //    console.log(pl.getPosts());
