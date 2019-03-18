@@ -178,7 +178,9 @@ let photoPosts = [
         photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
         hashTags: ['president', 'noslavery'],
         likes: []
-    },
+    }
+];
+let photoPosts2 = [
     {
         id: '21',
         descriprion: 'Vincent Willem van Gogh.',
@@ -187,7 +189,15 @@ let photoPosts = [
         photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg',
         hashTags: ['picture'],
         likes: []
-
+    },
+    {
+        id: '22',
+        descriprion: 'Vincent Willem van Gogh.',
+        createdAt: new Date('2018-03-18T19:57:26'),
+        author: 'Vincent Van Gone',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg',
+        hashTags: ['picture'],
+        likes: []
     }
 ];
 
@@ -228,8 +238,8 @@ let filter6 = { // 10, 21, 20, 14, 18, 16, 8, 6, 17, 11, 13
 }
 
 let photoPost1 = {
-    id: '31',
-    descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+    id: '25',
+    descriprion: 'Struggle is to save the Union.',
     createdAt: new Date('1839-02-12T14:23:07'),
     author: 'Abraham Lincoln',
     photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
@@ -238,7 +248,7 @@ let photoPost1 = {
 }
 let photoPost2 = {
     id: '25',
-    descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+    descriprion: 'Struggle is to save the Union.',
     createdAt: new Date('1839-02-12T14:23:07'),
     author: '',
     photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
@@ -246,7 +256,7 @@ let photoPost2 = {
     likes: []
 }
 let photoPost3 = {
-    id: '25',
+    id: '28',
     descriprion: '',
     createdAt: new Date('1839-02-12T14:23:07'),
     author: 'Abraham Lincoln',
@@ -256,7 +266,7 @@ let photoPost3 = {
 }
 let photoPost4 = {
     id: '25',
-    descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+    descriprion: 'Struggle is to save the Union',
     createdAt: new Date('1839-02-12T14:23:07'),
     author: 'Abraham Lincoln',
     photoLink: '',
@@ -264,15 +274,15 @@ let photoPost4 = {
     likes: []
 }
 let photoPost5 = {
-    id: '25',
-    descriprion: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
+    id: '34',
+    descriprion: 'Struggle is to save the Union, and is not either to save or to destroy slavery.',
     createdAt: new Date('1839-02-12T14:23:07'),
     author: 'Abraham Lincoln',
     hashTags: ['president', 'noslavery'],
     likes: []
 }
 let photoPost6 = {
-    id: '25',
+    id: '28',
     descriprion: 'Newly added post[6]',
     createdAt: new Date('2007-03-12T17:22:07'),
     author: 'Abba',
@@ -289,6 +299,8 @@ let editor2 = {
     author: 'abcda',
     hashTags: ['new like', 'edited like']
 }
+
+const MAX_DESCRIPTION_LENGTH = 200;
 
 class PhotoList {
     constructor(photoPosts) {
@@ -330,14 +342,22 @@ class PhotoList {
         return this.posts[index];
     }
 
+    _validateID(id) {
+        if(this.posts.findIndex((item) => item.id === id) === -1) {
+            return true;
+        }
+        return false;
+    }
+
     static validate(photoPost) {
         if (typeof photoPost === 'object' && photoPost !== null) {
-            if (photoPost.id && photoPost.descriprion && photoPost.createdAt && photoPost.author &&
-            photoPost.photoLink) {
+            if (photoPost.id && (photoPost.descriprion || photoPost.descriprion === "") &&
+            photoPost.createdAt && photoPost.author && photoPost.photoLink) {
                 if (typeof photoPost.id === 'string' && typeof photoPost.descriprion === 'string' && 
                 typeof photoPost.createdAt === 'object' && typeof photoPost.author === 'string' &&
                 typeof photoPost.photoLink === 'string') {
-                    if (photoPost.author !== '' && photoPost.descriprion.length < 200 && photoPost.photoLink !== '') {
+                    if (photoPost.author !== '' && photoPost.descriprion.length < MAX_DESCRIPTION_LENGTH &&
+                    photoPost.photoLink !== '') {
                         if (Array.isArray(photoPost.hashTags)) {
                             if (photoPost.hashTags.length !== 0 && 
                             photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
@@ -358,9 +378,9 @@ class PhotoList {
         return false;
     }
 
-    add(photoPost) {
-        if(PhotoList.validate(photoPost)) {
-            photoPosts.push(photoPost);
+    add(post) {
+        if(PhotoList.validate(post) && this._validateID(post.id)) {
+            this.posts.push(post);
             return true;
         }
         else {
@@ -374,7 +394,7 @@ class PhotoList {
             return false;
         }
         let post = this.posts[index];
-        if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < 200) {
+        if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < MAX_DESCRIPTION_LENGTH) {
             post.descriprion = photoPost.descriprion;
         }
         if(typeof photoPost.photoLink === 'string' && photoPost.photoLink.length !== 0) {
@@ -420,63 +440,65 @@ let pl = new PhotoList(photoPosts);
 //    console.log(pl.getPosts(0, 10, filter4)); // 11
 //    console.log(pl.getPosts(0, 10, filter5)); // []
 //    console.log(pl.getPosts(0, 21, filter6)); // 10, 21, 20, 14, 18, 16, 8, 6, 17, 11, 13
-    console.log(pl.getPosts(3, 4, filter6));  // 14, 18, 16, 8
+//    console.log(pl.getPosts(3, 4, filter6));  // 14, 18, 16, 8
+/*
     console.log('=========================');
-// Тестовые запуски для getPhotoPost(...);
+// Тестовые запуски для get(id);
     console.log(pl.get('0')); // undefined
     console.log(pl.get(14));  // undefined
     console.log(pl.get('14'));    // 14
-
+*/
+/*
     console.log('=========================');
-// Тестовые запуски для validatePhotoPost(...);
-    console.log(PhotoList.validate(photoPost1)); // false
+// Тестовые запуски для static validate(post);
+    console.log(PhotoList.validate(photoPost1)); // true
     console.log(PhotoList.validate(photoPost2)); // false
     console.log(PhotoList.validate(photoPost3)); // true
     console.log(PhotoList.validate(photoPost4)); // false
     console.log(PhotoList.validate(photoPost5)); // false
     console.log(PhotoList.validate(photoPost6)); // true
-
+*/
 /*    console.log('=========================');
-// Тестовые запуски для addPhotoPost(...);
-    console.log(addPhotoPost(photoPost1)); // false
-    console.log(addPhotoPost(photoPost2)); // false
-    console.log(addPhotoPost(photoPost3)); // true
-    console.log(addPhotoPost(photoPost4)); // false
-    console.log(addPhotoPost(photoPost5)); // false
-    console.log(addPhotoPost(photoPost6)); // false, т.к. с таким id уже добавлен <photoPost3>.
+// Тестовые запуски для addPhotoPost(post);
+    console.log(pl.add(photoPost1)); // true
+    console.log(pl.add(photoPost2)); // false
+    console.log(pl.add(photoPost3)); // true
+    console.log(pl.add(photoPost4)); // false
+    console.log(pl.add(photoPost5)); // false
+    console.log(pl.add(photoPost6)); // false, т.к. с таким id уже добавлен <photoPost3>.
 */
 /*    console.log('=========================');
 // Тестовые запуски для editPhotoPost(...);
-    console.log(getPhotoPost('1'));
-    console.log(editPhotoPost('1', editor1)); // true
-    console.log(getPhotoPost('1'));
+    console.log(pl.get('1'));
+    console.log(pl.edit('1', editor1)); // true
+    console.log(pl.get('1'));
 
-    console.log(getPhotoPost('5'));
-    console.log(editPhotoPost('5', editor2)); // true
-    console.log(getPhotoPost('5'));
+    console.log(pl.get('5'));
+    console.log(pl.edit('5', editor2)); // true
+    console.log(pl.get('5'));
 
-    console.log(getPhotoPost('6'));
-    console.log(editPhotoPost('6',photoPost3)); // true
-    console.log(getPhotoPost('6'));
+    console.log(pl.get('6'));
+    console.log(pl.edit('6',photoPost3)); // true
+    console.log(pl.get('6'));
 
-    console.log(getPhotoPost('25'));
-    console.log(editPhotoPost('25', photoPost4)); // false
-    console.log(getPhotoPost('25'));
+    console.log(pl.get('25'));
+    console.log(pl.edit('25', photoPost4)); // false
+    console.log(pl.get('25'));
 
-    console.log(getPhotoPost('20'));
-    console.log(editPhotoPost('20', photoPosts[20])); // true
-    console.log(getPhotoPost('20'));
+    console.log(pl.get('20'));
+    console.log(pl.edit('20', photoPosts[19])); // true
+    console.log(pl.get('20'));
 
-    console.log(getPhotoPost('14'));
-    console.log(editPhotoPost('14', photoPost6)); // true
-    console.log(getPhotoPost('14'));
+    console.log(pl.get('14'));
+    console.log(pl.edit('14', photoPost6)); // true
+    console.log(pl.get('14'));
 */
 /*    console.log('=========================');
 // Тестовые запуски для removePhotoPost(...);
-    console.log(removePhotoPost('4')); // true
-    console.log(removePhotoPost('6')); // true
-    console.log(removePhotoPost('1')); // true
-    console.log(removePhotoPost('9')); // true
-    console.log(removePhotoPost('5')); // true
-    console.log(removePhotoPost('6')); // false, т.к. уже удалён
+    console.log(pl.remove('4')); // true
+    console.log(pl.remove('6')); // true
+    console.log(pl.remove('1')); // true
+    console.log(pl.remove('9')); // true
+    console.log(pl.remove('5')); // true
+    console.log(pl.remove('6')); // false, т.к. уже удалён
 */
