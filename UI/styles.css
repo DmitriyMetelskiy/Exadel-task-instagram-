@@ -27,12 +27,19 @@
 .header__home {
 }
 .header__add-photo {
-}
-.header__login {
-    font-size: larger;
     display: none;
 }
+.header__login p {
+    display: inline;
+    font-size: large;
+    font-family: sans-serif;
+}
+.header__login input {
+    height: 40px;
+    vertical-align: middle;
+}
 .header__user {
+    display: none;
 }
 .header__username {
     display: inline-block;

@@ -180,35 +180,6 @@ const photoPosts1 = [
         likes: []
     }
 ];
-const photoPosts2 = [
-    {
-        id: '20',
-        description: 'My paramount object in this struggle is to save the Union, and is not either to save or to destroy slavery.',
-        createdAt: new Date('1839-02-12T14:23:07'),
-        author: 'Abraham Lincoln',
-        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
-        hashTags: ['president', 'noslavery'],
-        likes: []
-    },
-    {
-        id: '21',
-        description: 'Vincent Willem van Gogh.',
-        createdAt: new Date('1853-03-30T19:15:26'),
-        author: 'Vincent Van Gogh',
-        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg',
-        hashTags: ['picture'],
-        likes: []
-    },
-    {
-        id: '22',
-        description: 'Vincent Willem van Gogh.',
-        createdAt: new Date('2018-03-18T19:57:26'),
-        author: 'Vincent Van Gone',
-        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg',
-        hashTags: ['picture'],
-        likes: []
-    }
-];
 
 const filter1 = { // 15, 4 & 2
     author: 'Marilyn Monroe'
@@ -312,7 +283,6 @@ const editor2 = {
 /*eslint no-undef: "off"*/
 let call = (function() {
     const photoList = new PhotoList(photoPosts1);
-//    console.log(photoList.addAll(photoPosts2));    // 20 (from photoPosts)
 
     const view = new View(document.getElementsByClassName('main__publications')[0], 'Leonardo da Vinci');
 
@@ -328,7 +298,6 @@ let call = (function() {
     const showPosts = function (skip, top, filter) {
         view.showPosts(photoList.getPosts(skip, top, filter));
     }
-
 
     showPosts();
 

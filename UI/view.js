@@ -2,8 +2,22 @@ class View {
     constructor(postsWrapper, user = 'Guest') {
         this._postsWrapper = postsWrapper;
         this._user = user;
-        if(this._user === 'Guest') {
-            alert('Guest');
+        this._showHeader();
+    }
+
+    _showHeader() {
+        if(this._user !== 'Guest') {
+            const addButton = document.querySelector('.header__add-photo');
+            addButton.style.display = 'initial';
+
+            const header_user = document.querySelector('.header__user');
+            header_user.style.display = 'initial';
+
+            const username = document.querySelector('.header__username');
+            username.textContent = this._user;
+
+            const login = document.querySelector('.header__login');
+            login.style.display = 'none';
         }
     }
 
@@ -22,24 +36,24 @@ class View {
         
         const author = document.createElement('div');
         const author_h3 = document.createElement('h3');
-        author_h3.innerText = postObject.author;
+        author_h3.textContent = postObject.author;
         author.appendChild(author_h3);
         info.appendChild(author);
 
         const hashtags = document.createElement('div');
         const hashtags_p = document.createElement('p');
-        hashtags_p.innerText = postObject.hashTags;
+        hashtags_p.textContent = postObject.hashTags;
         hashtags.appendChild(hashtags_p);
         info.appendChild(hashtags);
 
         const description = document.createElement('div');
         description.classList.add('post__information');
         const description_p = document.createElement('p');
-        description_p.innerText = postObject.description;
+        description_p.textContent = postObject.description;
         description.appendChild(description_p);
         info.appendChild(description);
 
-        if(this.user !== 'Guest') {
+        if(this._user !== 'Guest') {
             const buttons = document.createElement('div');
             buttons.classList.add('post__buttons');
         //////// Like
@@ -94,7 +108,7 @@ class View {
         const dateString = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + '  ' +
                                 date.getHours() + ':' + date.getMinutes();
         const date_p = document.createElement('p');
-        date_p.innerText = 'published ' + dateString;
+        date_p.textContent = 'published ' + dateString;
         createdAt.appendChild(date_p);
 
         info.appendChild(createdAt);
