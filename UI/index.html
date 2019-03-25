@@ -14,12 +14,12 @@
         <div class="header__add-photo">
             <a><img src="./images/add_photo.png" alt="Add new photo"></a>
         </div>
-        <div class="header__login">
-            <input type="button" value="Login">
-        </div>
         <div class="header__user">
-            <p>User286451</p>
-            <a href="./index.html"><img src="./images/log_out.png" alt="Log out"></a>
+            <p class="header__username"></p>
+            <a onclick="call._logout()"><img src="./images/log_out.png" alt="Log out"></a>
+        </div>
+        <div class="header__login">
+            <p>Sign in</p><input type="image" src='./images/sign_in.png' alt="Login">
         </div>
     </header>
     <main class="main">
@@ -35,223 +35,7 @@
             <input class="search-popup__search-button" type="button" value="Search">
         </aside>
         <div class="main__publications">
-            <article class="post">
-                <img src="./images/post1.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post2.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post3.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post4.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post5.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post6.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post7.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post8.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post9.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
-            <article class="post">
-                <img src="./images/post10.jpg">
-                <div class="post__details">
-                    <div><h3>User286451</h3></div>
-                    <div>
-                        <p>#bike #ride'n'roll #ride_mtb</p>
-                    </div>
-                    <div class="post__information"><p>Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...Some information about that picture...
-                        Some information about that picture...</p></div>
-                    <div class="post__buttons">
-                        <div class="post__like-button"><a><img src="./images/like.png" alt="Like"></a></div>
-                        <div class="post__edit-button"><a><img src="./images/edit.png" alt="Edit"></a></div>
-                        <div class="post__delete-button"><a><img src="./images/delete.png" alt="Delete"></a></div>
-                    </div>
-                    <div class="publication-date"><p>published 04.03.2019 20:00</p></div>
-                </div>
-            </article>
+            
         </div>
         <input class="show-more-posts" type="button" value="Show more">
     </main>
@@ -272,5 +56,7 @@
             <p>Last update: 14:00 16.03.2019</p>
         </div>
     </footer>
+    <script src="./posts.js"></script>
+    <script src="./view.js"></script>
     <script src="./script.js"></script>
 </body>
