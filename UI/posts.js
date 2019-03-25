@@ -5,7 +5,7 @@ class PhotoList {
         this._posts = photoPosts.slice();
     }
 
-    getPosts(skip = 0, top = 10, filterConfig = {}) {
+    _getPosts(skip = 0, top = 10, filterConfig = {}) {
         if(typeof skip === "number" && !isNaN(skip) && skip >= 0 &&
             typeof top === "number" && !isNaN(top) && top >= 0 &&
              typeof filterConfig === "object" && filterConfig !== null) {
@@ -29,7 +29,7 @@ class PhotoList {
         }
     }
     
-    get(id) {
+    _get(id) {
         if(typeof id !== 'string') {
             return;
         }
@@ -47,7 +47,7 @@ class PhotoList {
         return false;
     }
 
-    static validate(photoPost) {
+    static _validate(photoPost) {
         if (typeof photoPost === 'object' && photoPost !== null) {
             if (photoPost.id && (photoPost.descriprion || photoPost.descriprion === "") &&
             photoPost.createdAt && photoPost.author && photoPost.photoLink) {
@@ -76,7 +76,7 @@ class PhotoList {
         return false;
     }
 
-    add(post) {
+    _add(post) {
         if(PhotoList.validate(post) && this._validateID(post.id)) {
             this._posts.push(post);
             return true;
@@ -86,7 +86,7 @@ class PhotoList {
         }
     }
 
-    edit(id, photoPost) {
+    _edit(id, photoPost) {
         let index = this._posts.findIndex((item) => item.id === id);
         if (index === -1) {
             return false;
@@ -117,7 +117,7 @@ class PhotoList {
         return true;
     }
 
-    remove(id) {
+    _remove(id) {
         let index = this._posts.findIndex((item) => item.id === id);
         if (index !== -1) {
             this._posts.splice(index, 1);
@@ -128,7 +128,7 @@ class PhotoList {
         }
     }
 
-    addAll(postArray) {
+    _addAll(postArray) {
         let notAdded = [];
         if(!Array.isArray(postArray)) {
             return [];

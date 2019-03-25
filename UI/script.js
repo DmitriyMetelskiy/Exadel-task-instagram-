@@ -284,24 +284,53 @@ const editor2 = {
 let call = (function() {
     const photoList = new PhotoList(photoPosts1);
 
-    const view = new View(document.getElementsByClassName('main__publications')[0], 'Leonardo da Vinci');
-
+    const view = new View(document.getElementsByClassName('main__publications')[0]);
+    
+    const showPosts = function (skip, top, filter) {
+        view._showPosts(photoList._getPosts(skip, top, filter));
+    }
+    
     const addPost = function (post) {
-        if(photoList.add(post)) {
-            view.add(post);
+        if(photoList._add(post)) {
+            view._showPosts(photoList._getPosts());
         }
         else {
-            console.log('Failed to add post.');
+            alert('Failed to add post.');
         }
     };
 
-    const showPosts = function (skip, top, filter) {
-        view.showPosts(photoList.getPosts(skip, top, filter));
+    const removePost = function (id) {
+        if(photoList._remove(id)) {
+            view._showPosts(photoList._getPosts());
+        }
+        else {
+            alert('Failed to remove post.');
+        }
+    }
+
+    const editPost = function (id, photoPost) {
+        if(photoList._edit(id, photoPost)) {
+            view._editPost(id, photoList._get(id));
+        }
+        else {
+            alert('Failed to edit post.');
+        }
+    }
+
+    const _login = function(username) {
+        view._user = username;
+        view._showHeader();
+        showPosts();
+    }
+
+    const _logout = function() {
+        view._logout();
+        showPosts();
     }
 
     showPosts();
 
     return {
-        addPost, showPosts
+        showPosts, addPost, removePost, editPost, _login, _logout
     };
 })();

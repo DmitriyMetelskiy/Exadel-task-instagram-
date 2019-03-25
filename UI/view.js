@@ -13,12 +13,24 @@ class View {
             const header_user = document.querySelector('.header__user');
             header_user.style.display = 'initial';
 
-            const username = document.querySelector('.header__username');
+            const username = header_user.querySelector('.header__username');
             username.textContent = this._user;
 
             const login = document.querySelector('.header__login');
             login.style.display = 'none';
         }
+    }
+
+    _logout() {
+        this._user = 'Guest';
+        const addButton = document.querySelector('.header__add-photo');
+        addButton.style.display = 'none';
+
+        const header_user = document.querySelector('.header__user');
+        header_user.style.display = 'none';
+
+        const login = document.querySelector('.header__login');
+        login.style.display = 'initial';
     }
 
     _createPostElement(postObject) {
@@ -119,25 +131,28 @@ class View {
         // I guess this.src is this image's URL.
     }
 */
-    add(post) {
-        const postElement = this._createPostElement(post);
-
-        this._postsWrapper.appendChild(postElement);
-    }
-
-    showPosts(postsArray) {
+    _showPosts(postsArray) {
         const documentFragment = document.createDocumentFragment();
 
-        // while (this._postsWrapper.firstElementChild) {
-        //     this._postsWrapper.removeChild(this._postsWrapper.firstElementChild);
-        // }
+        while (this._postsWrapper.firstElementChild) {
+            this._postsWrapper.removeChild(this._postsWrapper.firstElementChild);
+        }
 
         postsArray
+            .slice()
             .map((post) => this._createPostElement(post))
             .forEach((postElement) => {
                 documentFragment.appendChild(postElement);
             });
 
         this._postsWrapper.appendChild(documentFragment);
+    }
+
+    _editPost(id, newPost) {
+        const oldElement = this._postsWrapper.querySelector('#' + id);
+        if(oldElement) {
+            const newElement = document.createElement(this._createPostElement(newPost));
+            this._postsWrapper.replaceChild(newElement, oldElement);
+        }
     }
 }
