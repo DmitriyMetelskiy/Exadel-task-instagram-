@@ -187,10 +187,8 @@ const filter1 = { // 15, 4 & 2
 const filter2 = { // 20 & 14
     author: 'Abraham Lincoln',
     hashTags: ['president'],
-    date: {
-        from: new Date(1810, 1, 1),
-        till: new Date(1840, 12, 31)
-    }
+    fromDate: new Date(1810, 1, 1),
+    tillDate: new Date(1840, 12, 31)
 }
 const filter3 = { // 20, 14 & 6
     author: 'Abraham Lincoln',
@@ -198,72 +196,49 @@ const filter3 = { // 20, 14 & 6
 }
 const filter4 = { // 11
     hashTags: ['helicopter', 'engineer'],
-    date: {
-        from: new Date(1450, 1, 1),
-        till: new Date(1600, 12, 31)
-    }
+    fromDate: new Date(1450, 1, 1),
+    tillDate: new Date(1600, 12, 31)
 }
 const filter5 = { // []
-    hashTags: ['masterpiece'],
-    date: {
-        from: new Date(1500, 1, 1),
-        till: new Date(1600, 12, 31)
+    hashTags: ['masterpiece'],    
+    fromDate: new Date(1500, 1, 1),
+    tillDate: new Date(1600, 12, 31)
+}
+const filter6 = { // 10, 21(not added), 20, 14, 18, 16, 8, 6, 17, 11, 13
+    fromDate: new Date(1400, 1, 1),
+    tillDate: new Date(1900, 12, 31)
+}
+    
+const newPost1 = {
+        id: '21',
+        description: 'Vincent Willem van Gogh.',
+        createdAt: new Date('1853-03-30T19:15:26'),
+        author: 'Vincent Van Gogh',
+        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg',
+        hashTags: ['picture'],
+        likes: []
     }
-}
-const filter6 = { // 10, 21, 20, 14, 18, 16, 8, 6, 17, 11, 13
-    date: {
-        from: new Date(1400, 1, 1),
-        till: new Date(1900, 12, 31)
+const newPost2 = {
+        id: '22',
+        description: 'Vincent Willem van Gone.',
+        createdAt: new Date('2018-03-18T19:57:26'),
+        author: 'Vincent Van Gogh',
+        photoLink: 'https://imgc.allpostersimages.com/img/print/posters/vincent-van-gogh-selfie-portrait_a-G-10455983-0.jpg',
+        hashTags: ['picture', 'meme'],
+        likes: []
     }
-}
-
-const photoPost1 = {
+const newPost3 = {
     id: '25',
-    description: 'Struggle is to save the Union.',
+    description: 'Newly added post[3].',
     createdAt: new Date('1839-02-12T14:23:07'),
-    author: 'Abraham Lincoln',
+    author: 'Abba',
     photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
     hashTags: ['president', 'noslavery'],
     likes: []
 }
-const photoPost2 = {
-    id: '25',
-    description: 'Struggle is to save the Union.',
-    createdAt: new Date('1839-02-12T14:23:07'),
-    author: '',
-    photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
-    hashTags: ['president', 'noslavery'],
-    likes: []
-}
-const photoPost3 = {
+const newPost4 = {
     id: '28',
-    description: '',
-    createdAt: new Date('1839-02-12T14:23:07'),
-    author: 'Abraham Lincoln',
-    photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
-    hashTags: ['president', 'noslavery'],
-    likes: []
-}
-const photoPost4 = {
-    id: '25',
-    description: 'Struggle is to save the Union',
-    createdAt: new Date('1839-02-12T14:23:07'),
-    author: 'Abraham Lincoln',
-    photoLink: '',
-    hashTags: ['president', 'noslavery'],
-    likes: []
-}
-const photoPost5 = {
-    id: '34',
-    description: 'Struggle is to save the Union, and is not either to save or to destroy slavery.',
-    createdAt: new Date('1839-02-12T14:23:07'),
-    author: 'Abraham Lincoln',
-    hashTags: ['president', 'noslavery'],
-    likes: []
-}
-const photoPost6 = {
-    id: '28',
-    description: 'Newly added post[6]',
+    description: 'Newly added post[4]',
     createdAt: new Date('2007-03-12T17:22:07'),
     author: 'Abba',
     photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
