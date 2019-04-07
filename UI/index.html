@@ -6,17 +6,17 @@
 <body class="body">
     <header class="header">
         <div class="header__logo">
-            <a href="./index.html"><img src="./images/logo.png" alt="Logo">Digal</a>
+            <a><img src="./images/logo.png" alt="Logo">Digal</a>
         </div>
         <div class=header__home>
-            <a href="./index.html"><img src="./images/home.png" alt="Home"></a>
+            <a><img src="./images/home.png" alt="Home"></a>
         </div>
         <div class="header__add-photo">
             <a><img src="./images/add_photo.png" alt="Add new photo"></a>
         </div>
         <div class="header__user">
             <p class="header__username"></p>
-            <a onclick="call._logout()"><img src="./images/log_out.png" alt="Log out"></a>
+            <a onclick=controller._logout()><img src="./images/log_out.png" alt="Log out"></a>
         </div>
         <div class="header__login">
             <p>Sign in</p><input type="image" src='./images/sign_in.png' alt="Login">
@@ -34,8 +34,17 @@
             <input class="search-popup__date-till-input" type="text" placeholder="till">
             <input class="search-popup__search-button" type="button" value="Search">
         </aside>
+        <div class="add_edit-photo-form">
+            <img src="">
+            <div class="post__details">
+                <div><h3>username</h3></div>
+                <div>
+                    <p>hashtags</p>
+                </div>
+                <div class="post__information"><p>description</p></div>
+            </div>
+        </div>
         <div class="main__publications">
-            
         </div>
         <input class="show-more-posts" type="button" value="Show more">
     </main>
@@ -53,7 +62,7 @@
             <p>e-mail: dmitriy_metelskiy@mail.ru</p>
         </div>
         <div class="portal-last-update">
-            <p>Last update: 14:00 16.03.2019</p>
+            <p>Last update: 02:00 07.04.2019</p>
         </div>
     </footer>
     <script src="./posts.js"></script>

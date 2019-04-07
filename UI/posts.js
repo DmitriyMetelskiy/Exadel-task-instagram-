@@ -37,34 +37,23 @@ class PhotoList {
         return this._posts[index];
     }
 
-    _validateID(id) {
-        if(this._posts.findIndex((item) => item.id === id) === -1) {
-            return true;
-        }
-        return false;
-    }
-
     static _validate(photoPost) {
-        if (photoPost.description.length < MAX_DESCRIPTION_LENGTH) {
-            if (Array.isArray(photoPost.hashTags)) {
-                if (photoPost.hashTags.length !== 0 && 
-                photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
-                    return false;
-                }
-            }
-            if (Array.isArray(photoPost.likes)) {
-                if (photoPost.likes.length !== 0 &&
-                photoPost.likes.filter((item) => typeof item !== 'string').length !== 0) {
-                    return false;
-                }
-            }
-            return true;
+        if (photoPost.photoLink.length === 0 || photoPost.description.length > MAX_DESCRIPTION_LENGTH) {
+            return false;
         }
-        return false;
+        if (photoPost.hashTags.length !== 0 && 
+        photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
+            return false;
+        }
+        if (photoPost.likes.length !== 0 &&
+        photoPost.likes.filter((item) => typeof item !== 'string').length !== 0) {
+            return false;
+        }
+        return true;
     }
 
     _add(post) {
-        if(PhotoList._validate(post) && this._validateID(post.id)) {
+        if(PhotoList._validate(post)) {
             this._posts.push(post);
             return true;
         }
@@ -74,45 +63,23 @@ class PhotoList {
     }
 
     _edit(id, photoPost) {
-        let index = this._posts.findIndex((item) => item.id === id);
-        if (index === -1) {
-            return false;
-        }
-        let post = this._posts[index];
-        if(typeof photoPost.descriprion === 'string' && photoPost.descriprion.length < MAX_DESCRIPTION_LENGTH) {
+        if(PhotoList._validate(photoPost)) {
+            let index = this._posts.findIndex((item) => item.id === id);
+            let post = this._posts[index];
             post.descriprion = photoPost.descriprion;
-        }
-        if(typeof photoPost.photoLink === 'string' && photoPost.photoLink.length !== 0) {
             post.photoLink = photoPost.photoLink;
-        }
-        if (Array.isArray(photoPost.hashTags)) {
-            if (photoPost.hashTags.length === 0) {
-                post.hashTags = [];
-            }
-            else if (photoPost.hashTags.filter((item) => typeof item !== 'string').length === 0) {
-                post.hashTags = photoPost.hashTags.slice();
-            }
-        }
-        if (Array.isArray(photoPost.likes)) {
-            if (photoPost.likes.length === 0) {
-                post.likes = [];
-            }
-            else if (photoPost.likes.filter((item) => typeof item !== 'string').length === 0) {
-                post.likes = photoPost.likes.slice();
-            }
-        }
-        return true;
-    }
-
-    _remove(id) {
-        let index = this._posts.findIndex((item) => item.id === id);
-        if (index !== -1) {
-            this._posts.splice(index, 1);
+            post.hashTags = photoPost.hashTags.slice();
             return true;
         }
         else {
             return false;
         }
+    }
+
+    _remove(id) {
+        let index = this._posts.findIndex((item) => item.id === id);
+        this._posts.splice(index, 1);
+        return true;
     }
 
     _addAll(postArray) {

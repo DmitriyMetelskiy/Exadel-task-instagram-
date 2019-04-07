@@ -125,6 +125,20 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.add_edit-photo-form {
+    display: none;
+    position: fixed;
+    left: 10%;
+    top: 20%;
+    width: 80%;
+    height: 60%;
+    background: linear-gradient(to left, #FC5C7D, #6A82FB);
+    border: 2px ridge rgb(70, 190, 220);
+    border-radius: 10px;
+    text-align: left;
+}
+
 .post {
     background: rgba(255, 255, 255, 0.2);
     width: 940px;
@@ -162,6 +176,10 @@
     margin: 2% 0;
     display: flex;
     justify-content: space-around;
+}
+.post__buttons a, .post__buttons img {
+    display: inline-block;
+    height: 100%;
 }
 .show-more-posts {
     margin: 10px 40%;
