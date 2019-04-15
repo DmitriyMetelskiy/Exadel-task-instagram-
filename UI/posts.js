@@ -45,10 +45,6 @@ class PhotoList {
         photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
             return false;
         }
-        if (photoPost.likes.length !== 0 &&
-        photoPost.likes.filter((item) => typeof item !== 'string').length !== 0) {
-            return false;
-        }
         return true;
     }
 
@@ -66,7 +62,7 @@ class PhotoList {
         if(PhotoList._validate(photoPost)) {
             let index = this._posts.findIndex((item) => item.id === id);
             let post = this._posts[index];
-            post.descriprion = photoPost.descriprion;
+            post.description = photoPost.description;
             post.photoLink = photoPost.photoLink;
             post.hashTags = photoPost.hashTags.slice();
             return true;

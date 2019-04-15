@@ -30,7 +30,7 @@ class View {
                     <div class="post__details">
                         <div><h3>${postObject.author}</h3></div>
                         <div>
-                            <p>${'#' + postObject.hashTags.join(' #')}</p>
+                            <p class="post__hashtags">${'#' + postObject.hashTags.join(' #')}</p>
                         </div>
                         <div class="post__information"><p>${postObject.description}</p></div>
                         <div class="post__buttons">
@@ -62,11 +62,6 @@ class View {
 
     _showPosts(postsArray) {
         const documentFragment = document.createDocumentFragment();
-
-        while (this._postsWrapper.firstElementChild) {
-            this._postsWrapper.removeChild(this._postsWrapper.firstElementChild);
-        }
-
         postsArray
             .slice()
             .map((post) => this._createPostElement(post))
@@ -77,11 +72,18 @@ class View {
         this._postsWrapper.appendChild(documentFragment);
     }
 
+    _clearPosts() {
+        while (this._postsWrapper.firstElementChild) {
+            this._postsWrapper.removeChild(this._postsWrapper.firstElementChild);
+        }
+    }
+
     _editPost(id, newPost) {
-        const oldElement = document.querySelector(`#${id}`);
+        const oldElement = this._postsWrapper.querySelector(`#${id}`);
         if(oldElement) {
-            const newElement = this._createPostElement(newPost);
-            this._postsWrapper.replaceChild(newElement, oldElement);
+            oldElement.querySelector('img').setAttribute('src', newPost.photoLink);
+            oldElement.querySelector('.post__hashtags').textContent = '#' + newPost.hashTags.join(' #');
+            oldElement.querySelector('.post__information').textContent = newPost.description;
             return true;
         }
         else {

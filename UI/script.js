@@ -183,43 +183,20 @@ const photoPosts1 = [
     }
 ];
 
-const onPostClick = function() {
-    const button = event.target.parentNode.parentNode;
-    if(button.className === 'post__like-button') {  // Обработка клика на like
-        const id = button.parentNode.parentNode.parentNode.id;
-        const post = controller._photoList._get(id);
-        const index = post.likes.indexOf(controller._view._user);
-        if(index === -1) {
-            post.likes.push(controller._view._user);
-            event.target.setAttribute('src', './images/like_active.png');
-        }
-        else {
-            post.likes.splice(index, 1);
-            event.target.setAttribute('src', './images/like.png');
-        }
-    }
-    else if(button.className === 'post__edit-button') { // Обработка клика на edit
-        alert('Edit clicked');
-    }
-    else if(button.className === 'post__delete-button') {   // Обработка клика на delete
-        alert('Delete clicked');
-    }
-}
-
 class Controller {
     constructor() {
         this._photoList = new PhotoList(photoPosts1/*posts from localStorage*/);
         this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest'/*username from localStorage*/);
-        this._view._postsWrapper.addEventListener('click', onPostClick);
+        this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
         this._alreadyShown = 0;
     }
 
     _showPosts(skip = 0, top = 10, filter = {}) {
-        this._view._showPosts(this._photoList._getPosts(skip, top, filter));
+        this._view._showPosts(this._photoList._getPosts(skip, top, filter/*filter from filter form*/));
     }
 
     _showMorePosts() {
-        
+        this._view._showPosts(this._alreadyShown + 1, 10/*, filter from filter form*/);
     }
 
     _addPost(post) {
@@ -233,7 +210,7 @@ class Controller {
     
     _editPost(id, photoPost) {
         if(this._photoList._edit(id, photoPost)) {
-            this._view._editPost(id, this._photoList._get(id));
+            this._view._editPost(id, photoPost);
         }
         else {
             alert('Failed to edit post.');
@@ -246,6 +223,29 @@ class Controller {
         }
         else {
             alert('Failed to remove post.');
+        }
+    }
+
+    static _onPostClick() {
+        const button = event.target.parentNode.parentNode;
+        if(button.className === 'post__like-button') {  // Обработка клика на like
+            const id = button.parentNode.parentNode.parentNode.id;
+            const post = controller._photoList._get(id);
+            const index = post.likes.indexOf(controller._view._user);
+            if(index === -1) {
+                post.likes.push(controller._view._user);
+                event.target.setAttribute('src', './images/like_active.png');
+            }
+            else {
+                post.likes.splice(index, 1);
+                event.target.setAttribute('src', './images/like.png');
+            }
+        }
+        else if(button.className === 'post__edit-button') { // Обработка клика на edit
+            alert('Edit clicked');
+        }
+        else if(button.className === 'post__delete-button') {   // Обработка клика на delete
+            alert('Delete clicked');
         }
     }
 
