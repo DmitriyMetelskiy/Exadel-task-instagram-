@@ -2,7 +2,6 @@
     min-width: 220px;
     padding: 0;
     margin: 0;
-    background: #6a82fb;
     background: linear-gradient(to left, #FC5C7D, #6A82FB);
 }
 .header {
@@ -118,6 +117,63 @@
     width: 90%;
     margin: 5px 5%;
 }
+.form-wrapper {
+    display: none;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(70, 190, 220, 0.8);
+}
+.login-form {
+    display: none;
+    position: relative;
+    margin: 30px auto;
+    min-width: 250px;
+    width: 500px;
+    height: 300px;
+    background: linear-gradient(to left, #FC5C7D, #6A82FB);
+    border: 2px ridge rgb(70, 190, 220);
+    border-radius: 10px;
+    text-align: left;
+}
+.login-form h2 {
+    display: inline-block;
+    margin: 25px 5%;
+    color: rgb(23, 0, 128);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande';
+}
+.login-form__close-button {
+    width: 40px;
+    height: 40px;
+}
+.login-form__close-button img {
+    float: right;
+    vertical-align: middle;
+    width: 50px;
+}
+.login-form__username, .login-form__password {
+    display: block;
+    margin: 20px auto;
+}
+.login-form__submit {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    width: 80px;
+}
+.add_edit-photo-form {
+    display: none;
+    position: fixed;
+    left: 10%;
+    top: 20%;
+    width: 80%;
+    height: 60%;
+    background: linear-gradient(to left, #FC5C7D, #6A82FB);
+    border: 2px ridge rgb(70, 190, 220);
+    border-radius: 10px;
+    text-align: left;
+}
 .main__publications {
     margin-top: 5px;
     display: flex;
@@ -151,10 +207,13 @@
     font-family: sans-serif;
     margin: 0 0 1% 0;
 }
-.post__details p {
+.post__hashtags {
+    font-family: sans-serif;
+    font-style: oblique;
     margin: 1% 0;
 }
 .post__information {
+    margin: 1% 0;
     max-height: 199px;
     overflow: auto;
 }
@@ -162,6 +221,10 @@
     margin: 2% 0;
     display: flex;
     justify-content: space-around;
+}
+.post__buttons a, .post__buttons img {
+    display: inline-block;
+    height: 100%;
 }
 .show-more-posts {
     margin: 10px 40%;
@@ -198,6 +261,9 @@
     .search-popup {
         width: 95px;
         left: -95px;
+    }
+    .login-form {
+        width: 200px;
     }
     .post {
         width: 99%;
