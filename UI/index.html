@@ -44,14 +44,22 @@
                     <button class="login-form__submit" type="submit">Log in</button>
                 </form>
             </div>
-            <div class="add_edit-photo-form">
-                <img src="">
-                <div class="post__details">
-                    <div><h3>username</h3></div>
-                    <div>
-                        <p>hashtags</p>
+            <div class="edit-form">
+                <div class="edit-form__image">
+                    <img src="">
+                </div>
+                <div class="edit-form__right">
+                    <div class="edit-form__author"><h3></h3></div>
+                    <a class="edit-form__close-button"><img src="./images/close_form.png"></a>
+                    <div class="edit-form__details">
+                        <p>Image:</p>
+                        <input id="edit-image-url" type="text" placeholder="new image's URL">
+                        <p>Hashtags:</p>
+                        <input id="edit-hashTags" type="text" placeholder="hashTags">
+                        <p>Description:</p>
+                        <input id="edit-description" type="text" placeholder="description">
+                        <button class="edit-form__submit" type="submit">Confirm changes</button>
                     </div>
-                    <div class="post__information"><p>description</p></div>
                 </div>
             </div>
         </div>

@@ -187,8 +187,10 @@ class Controller {
     constructor() {
         this._photoList = new PhotoList(photoPosts1/*posts from localStorage*/);
         this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest'/*username from localStorage*/);
-        this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
+        this._formWrapper = document.querySelector('.form-wrapper');
         this._alreadyShown = 0;
+
+        this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
     }
 
     _showPosts(skip = 0, top = 10, filter = {}) {
@@ -242,16 +244,35 @@ class Controller {
             }
         }
         else if(button.className === 'post__edit-button') { // Обработка клика на edit
-            alert('Edit clicked');
+            controller._formWrapper.style.display = 'block';
+            const form = controller._formWrapper.querySelector('.edit-form');
+            form.style.display = 'block';
+
+            const id = button.parentNode.parentNode.parentNode.id;
+            const post = controller._photoList._get(id);
+
+            const image = form.querySelector('.edit-form__image').firstElementChild;
+            image.setAttribute('src', post.photoLink);
+            form.querySelector('.edit-form__author').firstChild.textContent = post.author;
+            form.querySelector('#edit-image-url').value = post.photoLink;
+            form.querySelector('#edit-hashTags').value = post.hashTags;
+            form.querySelector('#edit-description').value = post.description;
+
         }
         else if(button.className === 'post__delete-button') {   // Обработка клика на delete
             alert('Delete clicked');
         }
     }
 
+    static _closeEditForm() {
+        controller._formWrapper.style.display = 'none';
+        controller._formWrapper.querySelector('.edit-form').style.display = 'none';
+    }
+
     _login(username) {
         this._view._user = username;
         this._view._showHeader();
+        this._view._clearPosts();
         this._showPosts();
     }
 
@@ -263,6 +284,11 @@ class Controller {
 
 const controller = new Controller();
 controller._showPosts();
+
+(function foo() {
+    const editCloseBtn = controller._formWrapper.querySelector('.edit-form__close-button');
+    editCloseBtn.addEventListener('click', Controller._closeEditForm);
+}())
 
 var filter1 = { // 15, 4 & 2
     author: 'Marilyn Monroe'
