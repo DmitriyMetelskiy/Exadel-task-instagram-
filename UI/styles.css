@@ -282,6 +282,9 @@
     .post {
         max-width: 99%;
     }
+    .edit-form {
+        max-width: 99%;
+    }
 }
 @media all and (max-width: 640px) {
     .header {
@@ -296,6 +299,9 @@
     }
     .login-form {
         width: 200px;
+    }
+    .edit-form {
+        max-width: 99%;
     }
     .post {
         width: 99%;
