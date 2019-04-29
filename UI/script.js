@@ -209,10 +209,60 @@ class Controller {
             alert('Failed to add post.');
         }
     }
+
+    static _showLoginForm() {
+        controller._formWrapper.style.display = 'block';
+        controller._formWrapper.querySelector('.login-form').style.display = 'block';
+    }
+
+    static _submitLoginForm() {
+        const loginForm = controller._formWrapper.querySelector('.login-form');
+        const username = loginForm.querySelector('.login-form__username').value;
+        Controller._login(username);
+        loginForm.style.display = 'none';
+        controller._formWrapper.style.display = 'none';
+    }
     
-    _editPost(id, photoPost) {
-        if(this._photoList._edit(id, photoPost)) {
-            this._view._editPost(id, photoPost);
+    static _closeLoginForm() {
+        controller._formWrapper.querySelector('.login-form').style.display = 'none';
+        controller._formWrapper.style.display = 'none';
+    }
+
+    static _login(username) {
+        controller._view._user = username;
+        controller._view._showHeader();
+        controller._view._clearPosts();
+        Controller._showPosts();
+    }
+
+    static _logout() {
+        controller._view._logout();
+        controller._view._clearPosts();
+        Controller._showPosts();
+    }
+
+    static _closeEditForm() {
+        controller._formWrapper.querySelector('.edit-form').style.display = 'none';
+        controller._formWrapper.style.display = 'none';
+    }
+
+    static _setEditImage() {
+        console.log(controller._formWrapper.querySelector('.edit-form__image'));
+        const img = controller._formWrapper.querySelector('.edit-form__image').firstElementChild;
+        img.setAttribute('src', controller._formWrapper.querySelector('#edit-image-url').value);
+    }
+
+    static _submitEditForm() {
+        const editForm = event.target.parentNode.parentNode.parentNode;
+        const postObject = {};
+        postObject.photoLink = editForm.querySelector('#edit-image-url').value;
+        postObject.description = editForm.querySelector('#edit-description').value;
+        postObject.hashTags = editForm.querySelector('#edit-hashTags').value.trim().substring(1).split(/[ #]+/);
+
+        if(controller._photoList._edit(`_${editForm.id}`, postObject)) {
+            controller._view._editPost(`_${editForm.id}`, postObject);
+            editForm.style.display = 'none';
+            controller._formWrapper.style.display = 'none';
         }
         else {
             alert('Failed to edit post.');
@@ -266,68 +316,35 @@ class Controller {
         }
     }
 
-    static _closeEditForm() {
-        controller._formWrapper.style.display = 'none';
-        controller._formWrapper.querySelector('.edit-form').style.display = 'none';
-    }
+    
 
-    static _setEditImage() {
-        console.log(controller._formWrapper.querySelector('.edit-form__image'));
-        const img = controller._formWrapper.querySelector('.edit-form__image').firstElementChild;
-        img.setAttribute('src', controller._formWrapper.querySelector('#edit-image-url').value);
-    }
-
-    static _submitEditForm() {
-        const editForm = event.target.parentNode.parentNode.parentNode;
-        const postObject = {};
-        postObject.photoLink = editForm.querySelector('#edit-image-url').value;
-        postObject.description = editForm.querySelector('#edit-description').value;
-        postObject.hashTags = editForm.querySelector('#edit-hashTags').value.trim().substring(1).split(/[ #]+/);
-
-        alert(postObject.description + '\n#' + postObject.hashTags.join(' #'));
-
-        if(controller._photoList._edit(`_${editForm.id}`, postObject)) {
-            controller._view._editPost(`_${editForm.id}`, postObject);
-            editForm.style.display = 'none';
-            controller._formWrapper.style.display = 'none';
-        }
-        else {
-            alert('Failed to edit post.');
-        }
-    }
-
-    static _login(username) {
-        controller._view._user = username;
-        controller._view._showHeader();
-        controller._view._clearPosts();
-        Controller._showPosts();
-    }
-
-    static _logout() {
-        controller._view._logout();
-        controller._view._clearPosts();
-        Controller._showPosts();
-    }
+    
 }
 
 const controller = new Controller();
 Controller._showPosts();
 
 (function foo() {
-    const logOut = document.querySelector('.header__user').lastElementChild;
-    logOut.addEventListener('click', Controller._logout);
-
     const headerHome = document.querySelector('.header__home');
     headerHome.firstElementChild.addEventListener('click', Controller._showPosts);
 
-    const editForm = controller._formWrapper.querySelector('.edit-form');
+    const headerLogin = document.querySelector('.header__login');
+    headerLogin.lastElementChild.addEventListener('click', Controller._showLoginForm);
 
+    const loginForm = controller._formWrapper.querySelector('.login-form');
+    const loginCloseBtn = loginForm.querySelector('.login-form__close-button');
+    loginCloseBtn.addEventListener('click', Controller._closeLoginForm);
+    const loginSubmit = loginForm.querySelector('.login-form__submit');
+    loginSubmit.addEventListener('click', Controller._submitLoginForm);
+
+    const logOut = document.querySelector('.header__user').lastElementChild;
+    logOut.addEventListener('click', Controller._logout);
+
+    const editForm = controller._formWrapper.querySelector('.edit-form');
     const editCloseBtn = editForm.querySelector('.edit-form__close-button');
     editCloseBtn.addEventListener('click', Controller._closeEditForm);
-
     const inputURL = editForm.querySelector('#edit-image-url');
     inputURL.addEventListener('change', Controller._setEditImage);
-
     const editSubmit = editForm.querySelector('.edit-form__submit');
     editSubmit.addEventListener('click', Controller._submitEditForm);
 }())
