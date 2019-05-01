@@ -16,7 +16,7 @@ const photoPosts1 = [
         createdAt: new Date('1926-06-01T18:56:00'),
         author: 'Marilyn Monroe',
         photoLink: 'https://images-na.ssl-images-amazon.com/images/I/71jhI7QEcPL._SX425_.jpg',
-        hashTags: ['sex-symbol', 'beuty'],
+        hashTags: ['sex-symbol', 'beauty'],
         likes: []
     },
     {
@@ -34,7 +34,7 @@ const photoPosts1 = [
         createdAt: new Date('1936-06-01T17:23:00'),
         author: 'Marilyn Monroe',
         photoLink: 'https://s3.ap-southeast-1.amazonaws.com/images.deccanchronicle.com/dc-Cover-boln7p6918vj8t9ptkbgf7lm12-20180201185439.Medi.jpeg',
-        hashTags: ['sex-symbol', 'beuty'],
+        hashTags: ['sex-symbol', 'beauty'],
         likes: ['Leonardo da Vinci']
     },
     {
@@ -133,7 +133,7 @@ const photoPosts1 = [
         createdAt: new Date('1956-06-01T15:05:21'),
         author: 'Marilyn Monroe',
         photoLink: 'https://thingsthatarerectangles.files.wordpress.com/2009/10/marilyn-monroe.jpg',
-        hashTags: ['sex-symbol', 'beuty'],
+        hashTags: ['sex-symbol', 'beauty'],
         likes: []
     },
     {
@@ -188,26 +188,91 @@ class Controller {
         this._photoList = new PhotoList(photoPosts1/*posts from localStorage*/);
         this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest'/*username from localStorage*/);
         this._formWrapper = document.querySelector('.form-wrapper');
-        this._alreadyShown = 0;
+        this._filterForm = document.querySelector('.search-popup');
+        this._alreadyShown = 10;
 
         this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
     }
 
-    static _showPosts(skip = 0, top = 10, filter = {}) {
-        controller._view._showPosts(controller._photoList._getPosts(skip, top, filter/*filter from filter form*/));
+    _getFilter() {
+        const filter = {};
+        const filterAuthor = this._filterForm.querySelector('.search-popup__author-input').value;
+        if (filterAuthor) {
+            filter.author = filterAuthor;
+        }
+        let filterHashTags = this._filterForm.querySelector('.search-popup__hashtags-input').value.trim();
+        if (filterHashTags) {
+            if (filterHashTags.charAt(0) === '#') {
+                filterHashTags = filterHashTags.substring(1);
+            }
+            filterHashTags = filterHashTags.split(/[ #]+/);
+            filter.hashTags = filterHashTags;
+        }
+        let dateFrom = this._filterForm.querySelector('.search-popup__date-from-input').value;
+        if (dateFrom) {
+            dateFrom = new Date(dateFrom);
+            filter.fromDate = dateFrom;
+        }
+        let dateTill = this._filterForm.querySelector('.search-popup__date-till-input').value;
+        if (dateTill) {
+            dateTill = new Date(dateTill);
+            filter.tillDate = dateTill;
+        }
+        return filter;
     }
 
-    _showMorePosts() {
-        this._view._showPosts(this._alreadyShown + 1, 10/*, filter from filter form*/);
+    static _submitFilter() {
+        controller._view._clearPosts();
+        console.log(controller._getFilter());
+        Controller._showPosts(0, 10, controller._getFilter());
+        controller._alreadyShown = 10;
     }
 
-    _addPost(post) {
-        if(this._photoList._add(post)) {
-            this._view._showPosts(this._photoList._getPosts());
+    static _showPosts(skip = 0, top = 10, filter = controller._getFilter()) {
+        controller._view._showPosts(controller._photoList._getPosts(skip, top, filter));
+    }
+
+    static _showMorePosts() {
+        controller._view._showPosts(controller._photoList._getPosts(controller._alreadyShown, 10, controller._getFilter()));
+        controller._alreadyShown += 10;
+    }
+
+    static _showAddPhotoForm() {
+        controller._formWrapper.style.display = 'block';
+        const addForm = controller._formWrapper.querySelector('.add-edit_form');
+        addForm.style.display = 'block';
+        addForm.querySelector('.add_form__submit').style.display = 'block';
+        addForm.querySelector('.edit_form__submit').style.display = 'none';
+
+        const image = addForm.querySelector('.add-edit_form__image').firstElementChild;
+        image.setAttribute('src', 'https://disgustingmen.com/wp-content/uploads/2019/04/Screen-Shot-2019-04-29-at-10.30.51-1024x615.jpg');
+        addForm.querySelector('.add-edit_form__author').firstElementChild.textContent = controller._view._user;
+        const inputImage = addForm.querySelector('#add-edit_image-url');
+        inputImage.value = 'https://disgustingmen.com/wp-content/uploads/2019/04/Screen-Shot-2019-04-29-at-10.30.51-1024x615.jpg';
+    }
+
+    static _submitAddForm() {
+        const addForm = controller._formWrapper.querySelector('.add-edit_form');
+        const post = {};
+        post.id = `_${new Date().getMilliseconds()}`;
+        post.description = addForm.querySelector('#add-edit_description').value;
+        post.createdAt = new Date();
+        post.author = controller._view._user;
+        post.photoLink = addForm.querySelector('#add-edit_image-url').value;
+        post.hashTags = addForm.querySelector('#add-edit_hashTags').value.trim().substring(1).split(/[ #]+/);
+        post.likes = [];
+
+        if(controller._photoList._add(post)) {
+            controller._view._clearPosts();
+            controller._view._showPosts(controller._photoList._getPosts());
+            controller._alreadyShown = 10;
         }
         else {
             alert('Failed to add post.');
         }
+
+        controller._formWrapper.style.display = 'none';
+        addForm.style.display = 'none';
     }
 
     static _showLoginForm() {
@@ -233,31 +298,33 @@ class Controller {
         controller._view._showHeader();
         controller._view._clearPosts();
         Controller._showPosts();
+        controller._alreadyShown = 10;
     }
 
     static _logout() {
         controller._view._logout();
         controller._view._clearPosts();
         Controller._showPosts();
+        controller._alreadyShown = 10;
     }
 
     static _closeEditForm() {
-        controller._formWrapper.querySelector('.edit-form').style.display = 'none';
+        controller._formWrapper.querySelector('.add-edit_form').style.display = 'none';
         controller._formWrapper.style.display = 'none';
     }
 
     static _setEditImage() {
-        console.log(controller._formWrapper.querySelector('.edit-form__image'));
-        const img = controller._formWrapper.querySelector('.edit-form__image').firstElementChild;
-        img.setAttribute('src', controller._formWrapper.querySelector('#edit-image-url').value);
+        console.log(controller._formWrapper.querySelector('.add-edit_form__image'));
+        const img = controller._formWrapper.querySelector('.add-edit_form__image').firstElementChild;
+        img.setAttribute('src', controller._formWrapper.querySelector('#add-edit_image-url').value);
     }
 
     static _submitEditForm() {
         const editForm = event.target.parentNode.parentNode.parentNode;
         const postObject = {};
-        postObject.photoLink = editForm.querySelector('#edit-image-url').value;
-        postObject.description = editForm.querySelector('#edit-description').value;
-        postObject.hashTags = editForm.querySelector('#edit-hashTags').value.trim().substring(1).split(/[ #]+/);
+        postObject.photoLink = editForm.querySelector('#add-edit_image-url').value;
+        postObject.description = editForm.querySelector('#add-edit_description').value;
+        postObject.hashTags = editForm.querySelector('#add-edit_hashTags').value.trim().substring(1).split(/[ #]+/);
 
         if(controller._photoList._edit(`_${editForm.id}`, postObject)) {
             controller._view._editPost(`_${editForm.id}`, postObject);
@@ -286,7 +353,7 @@ class Controller {
         }
         else if(button.className === 'post__edit-button') { // Обработка клика на edit
             controller._formWrapper.style.display = 'block';
-            const form = controller._formWrapper.querySelector('.edit-form');
+            const form = controller._formWrapper.querySelector('.add-edit_form');
             form.style.display = 'block';
 
             const id = button.parentNode.parentNode.parentNode.id;
@@ -294,13 +361,16 @@ class Controller {
 
             form.id = id.substring(1);
 
-            const image = form.querySelector('.edit-form__image').firstElementChild;
+            const image = form.querySelector('.add-edit_form__image').firstElementChild;
             image.setAttribute('src', post.photoLink);
-            form.querySelector('.edit-form__author').firstChild.textContent = post.author;
-            const inputImage = form.querySelector('#edit-image-url');
+            form.querySelector('.add-edit_form__author').firstChild.textContent = post.author;
+            const inputImage = form.querySelector('#add-edit_image-url');
             inputImage.value = post.photoLink;
-            form.querySelector('#edit-hashTags').value = '#' + post.hashTags.join(' #');
-            form.querySelector('#edit-description').value = post.description;
+            form.querySelector('#add-edit_hashTags').value = '#' + post.hashTags.join(' #');
+            form.querySelector('#add-edit_description').value = post.description;
+
+            form.querySelector('.add_form__submit').style.display = 'none';
+            form.querySelector('.edit_form__submit').style.display = 'block';
 
         }
         else if(button.className === 'post__delete-button') {   // Обработка клика на delete
@@ -315,10 +385,6 @@ class Controller {
             }
         }
     }
-
-    
-
-    
 }
 
 const controller = new Controller();
@@ -328,8 +394,14 @@ Controller._showPosts();
     const headerHome = document.querySelector('.header__home');
     headerHome.firstElementChild.addEventListener('click', Controller._showPosts);
 
+    const addPhoto = document.querySelector('.header__add-photo').firstElementChild;
+    addPhoto.addEventListener('click', Controller._showAddPhotoForm);
+
     const headerLogin = document.querySelector('.header__login');
     headerLogin.lastElementChild.addEventListener('click', Controller._showLoginForm);
+
+    const searchSubmit = controller._filterForm.querySelector('.search-popup__search-button');
+    searchSubmit.addEventListener('click', Controller._submitFilter);
 
     const loginForm = controller._formWrapper.querySelector('.login-form');
     const loginCloseBtn = loginForm.querySelector('.login-form__close-button');
@@ -340,11 +412,18 @@ Controller._showPosts();
     const logOut = document.querySelector('.header__user').lastElementChild;
     logOut.addEventListener('click', Controller._logout);
 
-    const editForm = controller._formWrapper.querySelector('.edit-form');
-    const editCloseBtn = editForm.querySelector('.edit-form__close-button');
+    const editForm = controller._formWrapper.querySelector('.add-edit_form');
+    const editCloseBtn = editForm.querySelector('.add-edit_form__close-button');
     editCloseBtn.addEventListener('click', Controller._closeEditForm);
-    const inputURL = editForm.querySelector('#edit-image-url');
+    const inputURL = editForm.querySelector('#add-edit_image-url');
     inputURL.addEventListener('change', Controller._setEditImage);
-    const editSubmit = editForm.querySelector('.edit-form__submit');
+
+    const editSubmit = editForm.querySelector('.edit_form__submit');
     editSubmit.addEventListener('click', Controller._submitEditForm);
+
+    const addSubmit = editForm.querySelector('.add_form__submit');
+    addSubmit.addEventListener('click', Controller._submitAddForm);
+
+    const showMorePostsBtn = document.querySelector('.show-more-posts');
+    showMorePostsBtn.addEventListener('click', Controller._showMorePosts);
 }())

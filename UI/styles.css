@@ -103,6 +103,9 @@
     margin: 5px 5%;
     box-sizing: border-box;
 }
+.date__from-till_paragraph {
+    margin: 0 20px;
+}
 .search-popup__date-from-input {
     width: 90%;
     margin: 5px 5%;
@@ -162,7 +165,7 @@
     text-align: center;
     width: 80px;
 }
-.edit-form {
+.add-edit_form {
     display: none;
     position: relative;
     margin: auto;
@@ -172,37 +175,41 @@
     border: 2px ridge rgb(70, 190, 220);
     border-radius: 10px;
 }
-.edit-form__image {
+.add-edit_form__image {
     display: inline-block;
     width: 60%;
     border-radius: 10px 0 0 10px;
 }
-.edit-form__image img {
+.add-edit_form__image img {
     width: 100%;
     border-radius: 10px 0 0 10px;
 }
-.edit-form__right {
+.add-edit_form__right {
     display: inline-block;
     vertical-align: top;
     width: 39%;
 }
-.edit-form__author {
+.add-edit_form__author {
     display: inline-block;
     margin-left: 10px;
 }
-.edit-form__close-button img {
+.add-edit_form__close-button img {
     float: right;
     vertical-align: middle;
     width: 50px;
 }
-.edit-form__details {
+.add-edit_form__details {
     margin: 0 auto;
 }
-.edit-form__details input {
+.add-edit_form__details input {
     width: 100%;
     margin: 2px auto;
 }
-.edit-form__submit {
+.add_form__submit {
+    display: block;
+    margin: 5px auto;
+}
+.edit_form__submit {
     display: block;
     margin: 5px auto;
 }
@@ -282,7 +289,7 @@
     .post {
         max-width: 99%;
     }
-    .edit-form {
+    .add-edit_form {
         max-width: 99%;
     }
 }
@@ -300,7 +307,7 @@
     .login-form {
         width: 200px;
     }
-    .edit-form {
+    .add-edit_form {
         max-width: 99%;
     }
     .post {
