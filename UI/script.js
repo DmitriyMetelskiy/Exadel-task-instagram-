@@ -1,6 +1,6 @@
 /*eslint no-undef: "off"*/
 
-const photoPosts1 = [
+const photoPosts = [
     {
         id: '_1',
         description: 'New film!',
@@ -185,12 +185,25 @@ const photoPosts1 = [
 
 class Controller {
     constructor() {
-        this._photoList = new PhotoList(photoPosts1/*posts from localStorage*/);
-        this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest'/*username from localStorage*/);
+        const posts = JSON.parse(localStorage.getItem('posts'));
+        if (posts && posts.length !== 0) {
+            posts.forEach((elem) => {elem.createdAt = new Date(elem.createdAt)});
+            this._photoList = new PhotoList(posts);
+        }
+        else {
+            localStorage.setItem('posts', JSON.stringify(photoPosts));
+            this._photoList = new PhotoList(photoPosts);
+        }
+        const username = localStorage.getItem('username');
+        if (username) {
+            this._view = new View(document.getElementsByClassName('main__publications')[0], username);
+        }
+        else {
+            this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest');
+        }
         this._formWrapper = document.querySelector('.form-wrapper');
         this._filterForm = document.querySelector('.search-popup');
         this._alreadyShown = 10;
-
         this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
     }
 
@@ -223,7 +236,6 @@ class Controller {
 
     static _submitFilter() {
         controller._view._clearPosts();
-        console.log(controller._getFilter());
         Controller._showPosts(0, 10, controller._getFilter());
         controller._alreadyShown = 10;
     }
@@ -235,6 +247,12 @@ class Controller {
     static _showMorePosts() {
         controller._view._showPosts(controller._photoList._getPosts(controller._alreadyShown, 10, controller._getFilter()));
         controller._alreadyShown += 10;
+    }
+
+    static _homeClick() {
+        controller._view._clearPosts();
+        Controller._showPosts(0, 10, {});
+        controller._alreadyShown = 10;
     }
 
     static _showAddPhotoForm() {
@@ -266,6 +284,7 @@ class Controller {
             controller._view._clearPosts();
             controller._view._showPosts(controller._photoList._getPosts());
             controller._alreadyShown = 10;
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else {
             alert('Failed to add post.');
@@ -299,6 +318,7 @@ class Controller {
         controller._view._clearPosts();
         Controller._showPosts();
         controller._alreadyShown = 10;
+        localStorage.setItem('username', username);
     }
 
     static _logout() {
@@ -306,6 +326,7 @@ class Controller {
         controller._view._clearPosts();
         Controller._showPosts();
         controller._alreadyShown = 10;
+        localStorage.removeItem('username');
     }
 
     static _closeEditForm() {
@@ -330,6 +351,7 @@ class Controller {
             controller._view._editPost(`_${editForm.id}`, postObject);
             editForm.style.display = 'none';
             controller._formWrapper.style.display = 'none';
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else {
             alert('Failed to edit post.');
@@ -350,6 +372,7 @@ class Controller {
                 post.likes.splice(index, 1);
                 event.target.setAttribute('src', './images/like.png');
             }
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else if(button.className === 'post__edit-button') { // Обработка клика на edit
             controller._formWrapper.style.display = 'block';
@@ -371,13 +394,13 @@ class Controller {
 
             form.querySelector('.add_form__submit').style.display = 'none';
             form.querySelector('.edit_form__submit').style.display = 'block';
-
         }
         else if(button.className === 'post__delete-button') {   // Обработка клика на delete
             if(confirm('Are you sure you want to delete post?')) {
                 const postElement = button.parentNode.parentNode.parentNode;
                 if(controller._photoList._remove(postElement.id)) {
                     postElement.parentNode.removeChild(postElement);
+                    localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
                 }
                 else {
                     alert('Failed to remove post.');
@@ -392,7 +415,7 @@ Controller._showPosts();
 
 (function foo() {
     const headerHome = document.querySelector('.header__home');
-    headerHome.firstElementChild.addEventListener('click', Controller._showPosts);
+    headerHome.firstElementChild.addEventListener('click', Controller._homeClick);
 
     const addPhoto = document.querySelector('.header__add-photo').firstElementChild;
     addPhoto.addEventListener('click', Controller._showAddPhotoForm);
