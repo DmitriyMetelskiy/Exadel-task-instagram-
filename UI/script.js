@@ -1,6 +1,6 @@
 /*eslint no-undef: "off"*/
 
-const photoPosts1 = [
+const photoPosts = [
     {
         id: '_1',
         description: 'New film!',
@@ -16,7 +16,7 @@ const photoPosts1 = [
         createdAt: new Date('1926-06-01T18:56:00'),
         author: 'Marilyn Monroe',
         photoLink: 'https://images-na.ssl-images-amazon.com/images/I/71jhI7QEcPL._SX425_.jpg',
-        hashTags: ['sex-symbol', 'beuty'],
+        hashTags: ['sex-symbol', 'beauty'],
         likes: []
     },
     {
@@ -34,7 +34,7 @@ const photoPosts1 = [
         createdAt: new Date('1936-06-01T17:23:00'),
         author: 'Marilyn Monroe',
         photoLink: 'https://s3.ap-southeast-1.amazonaws.com/images.deccanchronicle.com/dc-Cover-boln7p6918vj8t9ptkbgf7lm12-20180201185439.Medi.jpeg',
-        hashTags: ['sex-symbol', 'beuty'],
+        hashTags: ['sex-symbol', 'beauty'],
         likes: ['Leonardo da Vinci']
     },
     {
@@ -133,7 +133,7 @@ const photoPosts1 = [
         createdAt: new Date('1956-06-01T15:05:21'),
         author: 'Marilyn Monroe',
         photoLink: 'https://thingsthatarerectangles.files.wordpress.com/2009/10/marilyn-monroe.jpg',
-        hashTags: ['sex-symbol', 'beuty'],
+        hashTags: ['sex-symbol', 'beauty'],
         likes: []
     },
     {
@@ -185,44 +185,176 @@ const photoPosts1 = [
 
 class Controller {
     constructor() {
-        this._photoList = new PhotoList(photoPosts1/*posts from localStorage*/);
-        this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest'/*username from localStorage*/);
+        const posts = JSON.parse(localStorage.getItem('posts'));
+        if (posts && posts.length !== 0) {
+            posts.forEach((elem) => {elem.createdAt = new Date(elem.createdAt)});
+            this._photoList = new PhotoList(posts);
+        }
+        else {
+            localStorage.setItem('posts', JSON.stringify(photoPosts));
+            this._photoList = new PhotoList(photoPosts);
+        }
+        const username = localStorage.getItem('username');
+        if (username) {
+            this._view = new View(document.getElementsByClassName('main__publications')[0], username);
+        }
+        else {
+            this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest');
+        }
+        this._formWrapper = document.querySelector('.form-wrapper');
+        this._filterForm = document.querySelector('.search-popup');
+        this._alreadyShown = 10;
         this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
-        this._alreadyShown = 0;
     }
 
-    _showPosts(skip = 0, top = 10, filter = {}) {
-        this._view._showPosts(this._photoList._getPosts(skip, top, filter/*filter from filter form*/));
+    _getFilter() {
+        const filter = {};
+        const filterAuthor = this._filterForm.querySelector('.search-popup__author-input').value;
+        if (filterAuthor) {
+            filter.author = filterAuthor;
+        }
+        let filterHashTags = this._filterForm.querySelector('.search-popup__hashtags-input').value.trim();
+        if (filterHashTags) {
+            if (filterHashTags.charAt(0) === '#') {
+                filterHashTags = filterHashTags.substring(1);
+            }
+            filterHashTags = filterHashTags.split(/[ #]+/);
+            filter.hashTags = filterHashTags;
+        }
+        let dateFrom = this._filterForm.querySelector('.search-popup__date-from-input').value;
+        if (dateFrom) {
+            dateFrom = new Date(dateFrom);
+            filter.fromDate = dateFrom;
+        }
+        let dateTill = this._filterForm.querySelector('.search-popup__date-till-input').value;
+        if (dateTill) {
+            dateTill = new Date(dateTill);
+            filter.tillDate = dateTill;
+        }
+        return filter;
     }
 
-    _showMorePosts() {
-        this._view._showPosts(this._alreadyShown + 1, 10/*, filter from filter form*/);
+    static _submitFilter() {
+        controller._view._clearPosts();
+        Controller._showPosts(0, 10, controller._getFilter());
+        controller._alreadyShown = 10;
     }
 
-    _addPost(post) {
-        if(this._photoList._add(post)) {
-            this._view._showPosts(this._photoList._getPosts());
+    static _showPosts(skip = 0, top = 10, filter = controller._getFilter()) {
+        controller._view._showPosts(controller._photoList._getPosts(skip, top, filter));
+    }
+
+    static _showMorePosts() {
+        controller._view._showPosts(controller._photoList._getPosts(controller._alreadyShown, 10, controller._getFilter()));
+        controller._alreadyShown += 10;
+    }
+
+    static _homeClick() {
+        controller._view._clearPosts();
+        Controller._showPosts(0, 10, {});
+        controller._alreadyShown = 10;
+    }
+
+    static _showAddPhotoForm() {
+        controller._formWrapper.style.display = 'block';
+        const addForm = controller._formWrapper.querySelector('.add-edit_form');
+        addForm.style.display = 'block';
+        addForm.querySelector('.add_form__submit').style.display = 'block';
+        addForm.querySelector('.edit_form__submit').style.display = 'none';
+
+        const image = addForm.querySelector('.add-edit_form__image').firstElementChild;
+        image.setAttribute('src', 'https://disgustingmen.com/wp-content/uploads/2019/04/Screen-Shot-2019-04-29-at-10.30.51-1024x615.jpg');
+        addForm.querySelector('.add-edit_form__author').firstElementChild.textContent = controller._view._user;
+        const inputImage = addForm.querySelector('#add-edit_image-url');
+        inputImage.value = 'https://disgustingmen.com/wp-content/uploads/2019/04/Screen-Shot-2019-04-29-at-10.30.51-1024x615.jpg';
+    }
+
+    static _submitAddForm() {
+        const addForm = controller._formWrapper.querySelector('.add-edit_form');
+        const post = {};
+        post.id = `_${new Date().getMilliseconds()}`;
+        post.description = addForm.querySelector('#add-edit_description').value;
+        post.createdAt = new Date();
+        post.author = controller._view._user;
+        post.photoLink = addForm.querySelector('#add-edit_image-url').value;
+        post.hashTags = addForm.querySelector('#add-edit_hashTags').value.trim().substring(1).split(/[ #]+/);
+        post.likes = [];
+
+        if(controller._photoList._add(post)) {
+            controller._view._clearPosts();
+            controller._view._showPosts(controller._photoList._getPosts());
+            controller._alreadyShown = 10;
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else {
             alert('Failed to add post.');
         }
+
+        controller._formWrapper.style.display = 'none';
+        addForm.style.display = 'none';
+    }
+
+    static _showLoginForm() {
+        controller._formWrapper.style.display = 'block';
+        controller._formWrapper.querySelector('.login-form').style.display = 'block';
+    }
+
+    static _submitLoginForm() {
+        const loginForm = controller._formWrapper.querySelector('.login-form');
+        const username = loginForm.querySelector('.login-form__username').value;
+        Controller._login(username);
+        loginForm.style.display = 'none';
+        controller._formWrapper.style.display = 'none';
     }
     
-    _editPost(id, photoPost) {
-        if(this._photoList._edit(id, photoPost)) {
-            this._view._editPost(id, photoPost);
+    static _closeLoginForm() {
+        controller._formWrapper.querySelector('.login-form').style.display = 'none';
+        controller._formWrapper.style.display = 'none';
+    }
+
+    static _login(username) {
+        controller._view._user = username;
+        controller._view._showHeader();
+        controller._view._clearPosts();
+        Controller._showPosts();
+        controller._alreadyShown = 10;
+        localStorage.setItem('username', username);
+    }
+
+    static _logout() {
+        controller._view._logout();
+        controller._view._clearPosts();
+        Controller._showPosts();
+        controller._alreadyShown = 10;
+        localStorage.removeItem('username');
+    }
+
+    static _closeEditForm() {
+        controller._formWrapper.querySelector('.add-edit_form').style.display = 'none';
+        controller._formWrapper.style.display = 'none';
+    }
+
+    static _setEditImage() {
+        console.log(controller._formWrapper.querySelector('.add-edit_form__image'));
+        const img = controller._formWrapper.querySelector('.add-edit_form__image').firstElementChild;
+        img.setAttribute('src', controller._formWrapper.querySelector('#add-edit_image-url').value);
+    }
+
+    static _submitEditForm() {
+        const editForm = event.target.parentNode.parentNode.parentNode;
+        const postObject = {};
+        postObject.photoLink = editForm.querySelector('#add-edit_image-url').value;
+        postObject.description = editForm.querySelector('#add-edit_description').value;
+        postObject.hashTags = editForm.querySelector('#add-edit_hashTags').value.trim().substring(1).split(/[ #]+/);
+
+        if(controller._photoList._edit(`_${editForm.id}`, postObject)) {
+            controller._view._editPost(`_${editForm.id}`, postObject);
+            editForm.style.display = 'none';
+            controller._formWrapper.style.display = 'none';
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else {
             alert('Failed to edit post.');
-        }
-    }
-    
-    _removePost() {
-        if(this._photoList._remove(event.currentTarget.parentNode.parentNode.parentNode.parentNode.id)) {
-            this._view._showPosts(this._photoList._getPosts());
-        }
-        else {
-            alert('Failed to remove post.');
         }
     }
 
@@ -240,100 +372,81 @@ class Controller {
                 post.likes.splice(index, 1);
                 event.target.setAttribute('src', './images/like.png');
             }
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else if(button.className === 'post__edit-button') { // Обработка клика на edit
-            alert('Edit clicked');
+            controller._formWrapper.style.display = 'block';
+            const form = controller._formWrapper.querySelector('.add-edit_form');
+            form.style.display = 'block';
+
+            const id = button.parentNode.parentNode.parentNode.id;
+            const post = controller._photoList._get(id);
+
+            form.id = id.substring(1);
+
+            const image = form.querySelector('.add-edit_form__image').firstElementChild;
+            image.setAttribute('src', post.photoLink);
+            form.querySelector('.add-edit_form__author').firstChild.textContent = post.author;
+            const inputImage = form.querySelector('#add-edit_image-url');
+            inputImage.value = post.photoLink;
+            form.querySelector('#add-edit_hashTags').value = '#' + post.hashTags.join(' #');
+            form.querySelector('#add-edit_description').value = post.description;
+
+            form.querySelector('.add_form__submit').style.display = 'none';
+            form.querySelector('.edit_form__submit').style.display = 'block';
         }
         else if(button.className === 'post__delete-button') {   // Обработка клика на delete
-            alert('Delete clicked');
+            if(confirm('Are you sure you want to delete post?')) {
+                const postElement = button.parentNode.parentNode.parentNode;
+                if(controller._photoList._remove(postElement.id)) {
+                    postElement.parentNode.removeChild(postElement);
+                    localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
+                }
+                else {
+                    alert('Failed to remove post.');
+                }
+            }
         }
-    }
-
-    _login(username) {
-        this._view._user = username;
-        this._view._showHeader();
-        this._showPosts();
-    }
-
-    _logout() {
-        this._view._logout();
-        this._showPosts();
     }
 }
 
 const controller = new Controller();
-controller._showPosts();
+Controller._showPosts();
 
-var filter1 = { // 15, 4 & 2
-    author: 'Marilyn Monroe'
-}
-var filter2 = { // 20 & 14
-    author: 'Abraham Lincoln',
-    hashTags: ['president'],
-    fromDate: new Date(1810, 1, 1),
-    tillDate: new Date(1840, 12, 31)
-}
-var filter3 = { // 20, 14 & 6
-    author: 'Abraham Lincoln',
-    hashTags: ['president']
-}
-var filter4 = { // 11
-    hashTags: ['helicopter', 'engineer'],
-    fromDate: new Date(1450, 1, 1),
-    tillDate: new Date(1600, 12, 31)
-}
-var filter5 = { // []
-    hashTags: ['masterpiece'],    
-    fromDate: new Date(1500, 1, 1),
-    tillDate: new Date(1600, 12, 31)
-}
-var filter6 = { // 10, 21(not added), 20, 14, 18, 16, 8, 6, 17, 11, 13
-    fromDate: new Date(1400, 1, 1),
-    tillDate: new Date(1900, 12, 31)
-}
-    
-var newPost1 = {
-        id: '21',
-        description: 'Vincent Willem van Gogh.',
-        createdAt: new Date('1853-03-30T19:15:26'),
-        author: 'Vincent Van Gogh',
-        photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/220px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg',
-        hashTags: ['picture'],
-        likes: []
-    }
-var newPost2 = {
-        id: '22',
-        description: 'Vincent Willem van Gone.',
-        createdAt: new Date('2018-03-18T19:57:26'),
-        author: 'Vincent Van Gogh',
-        photoLink: 'https://imgc.allpostersimages.com/img/print/posters/vincent-van-gogh-selfie-portrait_a-G-10455983-0.jpg',
-        hashTags: ['picture', 'meme'],
-        likes: []
-    }
-var newPost3 = {
-    id: '25',
-    description: 'Newly added post[3].',
-    createdAt: new Date('1839-02-12T14:23:07'),
-    author: 'Abba',
-    photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
-    hashTags: ['president', 'noslavery'],
-    likes: []
-}
-var newPost4 = {
-    id: '28',
-    description: 'Newly added post[4]',
-    createdAt: new Date('2007-03-12T17:22:07'),
-    author: 'Abba',
-    photoLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Emancipation_proclamation.jpg/1024px-Emancipation_proclamation.jpg',
-    hashTags: ['new', 'brand_new'],
-    likes: []
-}
+(function foo() {
+    const headerHome = document.querySelector('.header__home');
+    headerHome.firstElementChild.addEventListener('click', Controller._homeClick);
 
-var editor1 = {
-    description: [],
-    photoLink: 'http://haradok.info/static/news/5/4565/preview.jpg'
-}
-var editor2 = {
-    author: 'abcda',
-    hashTags: ['new like', 'edited like']
-}
+    const addPhoto = document.querySelector('.header__add-photo').firstElementChild;
+    addPhoto.addEventListener('click', Controller._showAddPhotoForm);
+
+    const headerLogin = document.querySelector('.header__login');
+    headerLogin.lastElementChild.addEventListener('click', Controller._showLoginForm);
+
+    const searchSubmit = controller._filterForm.querySelector('.search-popup__search-button');
+    searchSubmit.addEventListener('click', Controller._submitFilter);
+
+    const loginForm = controller._formWrapper.querySelector('.login-form');
+    const loginCloseBtn = loginForm.querySelector('.login-form__close-button');
+    loginCloseBtn.addEventListener('click', Controller._closeLoginForm);
+    const loginSubmit = loginForm.querySelector('.login-form__submit');
+    loginSubmit.addEventListener('click', Controller._submitLoginForm);
+
+    const logOut = document.querySelector('.header__user').lastElementChild;
+    logOut.addEventListener('click', Controller._logout);
+
+    const editForm = controller._formWrapper.querySelector('.add-edit_form');
+    const editCloseBtn = editForm.querySelector('.add-edit_form__close-button');
+    editCloseBtn.addEventListener('click', Controller._closeEditForm);
+    const inputURL = editForm.querySelector('#add-edit_image-url');
+    inputURL.addEventListener('change', Controller._setEditImage);
+
+    const editSubmit = editForm.querySelector('.edit_form__submit');
+    editSubmit.addEventListener('click', Controller._submitEditForm);
+
+    const addSubmit = editForm.querySelector('.add_form__submit');
+    addSubmit.addEventListener('click', Controller._submitAddForm);
+
+    const showMorePostsBtn = document.querySelector('.show-more-posts');
+    showMorePostsBtn.addEventListener('click', Controller._showMorePosts);
+}())

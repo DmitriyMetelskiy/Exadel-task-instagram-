@@ -42,7 +42,7 @@ class PhotoList {
             return false;
         }
         if (photoPost.hashTags.length !== 0 && 
-        photoPost.hashTags.filter((item) => typeof item !== 'string').length !== 0) {
+        photoPost.hashTags.some((item) => typeof item !== 'string')) {
             return false;
         }
         return true;
