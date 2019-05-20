@@ -26,11 +26,16 @@ class View {
         postElement.classList.add('post');
         postElement.id = postObject.id;
 
+        let hashTags = postObject.hashTags;
+        if (hashTags.length !== 0) {
+            hashTags = '#' + hashTags.join(' #')
+        }
+
         postElement.innerHTML = `<img src="${postObject.photoLink}">
                     <div class="post__details">
                         <div><h3>${postObject.author}</h3></div>
                         <div>
-                            <p class="post__hashtags">${'#' + postObject.hashTags.join(' #')}</p>
+                            <p class="post__hashtags">${hashTags}</p>
                         </div>
                         <div class="post__information"><p>${postObject.description}</p></div>
                         <div class="post__buttons">
@@ -82,7 +87,12 @@ class View {
         const oldElement = this._postsWrapper.querySelector(`#${id}`);
         if(oldElement) {
             oldElement.querySelector('img').setAttribute('src', newPost.photoLink);
-            oldElement.querySelector('.post__hashtags').textContent = '#' + newPost.hashTags.join(' #');
+
+            let hashTags = newPost.hashTags;
+            if (hashTags.length !== 0) {
+                hashTags = '#' + hashTags.join(' #')
+            }
+            oldElement.querySelector('.post__hashtags').textContent = hashTags;
             oldElement.querySelector('.post__information').textContent = newPost.description;
             return true;
         }
