@@ -183,6 +183,8 @@ const photoPosts = [
     }
 ];
 
+const DEFAULT_AMNT_OF_POSTS = 10;
+
 class Controller {
     constructor() {
         const posts = JSON.parse(localStorage.getItem('posts'));
@@ -195,15 +197,11 @@ class Controller {
             this._photoList = new PhotoList(photoPosts);
         }
         const username = localStorage.getItem('username');
-        if (username) {
-            this._view = new View(document.getElementsByClassName('main__publications')[0], username);
-        }
-        else {
-            this._view = new View(document.getElementsByClassName('main__publications')[0], 'Guest');
-        }
+        this._view = new View(document.getElementsByClassName('main__publications')[0], username || 'Guest');
+
         this._formWrapper = document.querySelector('.form-wrapper');
         this._filterForm = document.querySelector('.search-popup');
-        this._alreadyShown = 10;
+        this._alreadyShown = DEFAULT_AMNT_OF_POSTS;
         this._view._postsWrapper.addEventListener('click', Controller._onPostClick);
     }
 
@@ -236,23 +234,23 @@ class Controller {
 
     static _submitFilter() {
         controller._view._clearPosts();
-        Controller._showPosts(0, 10, controller._getFilter());
-        controller._alreadyShown = 10;
+        Controller._showPosts(0, DEFAULT_AMNT_OF_POSTS, controller._getFilter());
+        controller._alreadyShown = DEFAULT_AMNT_OF_POSTS;
     }
 
-    static _showPosts(skip = 0, top = 10, filter = controller._getFilter()) {
+    static _showPosts(skip = 0, top = DEFAULT_AMNT_OF_POSTS, filter = controller._getFilter()) {
         controller._view._showPosts(controller._photoList._getPosts(skip, top, filter));
     }
 
     static _showMorePosts() {
-        controller._view._showPosts(controller._photoList._getPosts(controller._alreadyShown, 10, controller._getFilter()));
-        controller._alreadyShown += 10;
+        controller._view._showPosts(controller._photoList._getPosts(controller._alreadyShown, DEFAULT_AMNT_OF_POSTS, controller._getFilter()));
+        controller._alreadyShown += DEFAULT_AMNT_OF_POSTS;
     }
 
     static _homeClick() {
         controller._view._clearPosts();
-        Controller._showPosts(0, 10, {});
-        controller._alreadyShown = 10;
+        Controller._showPosts();
+        controller._alreadyShown = DEFAULT_AMNT_OF_POSTS;
     }
 
     static _showAddPhotoForm() {
@@ -267,6 +265,9 @@ class Controller {
         addForm.querySelector('.add-edit_form__author').firstElementChild.textContent = controller._view._user;
         const inputImage = addForm.querySelector('#add-edit_image-url');
         inputImage.value = 'https://disgustingmen.com/wp-content/uploads/2019/04/Screen-Shot-2019-04-29-at-10.30.51-1024x615.jpg';
+
+        addForm.querySelector('#add-edit_hashTags').value = '';
+        addForm.querySelector('#add-edit_description').value = '';
     }
 
     static _submitAddForm() {
@@ -277,21 +278,29 @@ class Controller {
         post.createdAt = new Date();
         post.author = controller._view._user;
         post.photoLink = addForm.querySelector('#add-edit_image-url').value;
-        post.hashTags = addForm.querySelector('#add-edit_hashTags').value.trim().substring(1).split(/[ #]+/);
+
+        post.hashTags = addForm.querySelector('#add-edit_hashTags').value.trim().substring(1);
+        if (post.hashTags) {
+            post.hashTags = hashTagsString.split(/[ #]+/);
+        }
+        else {
+            post.hashTags = [];
+        }
+
         post.likes = [];
 
         if(controller._photoList._add(post)) {
             controller._view._clearPosts();
             controller._view._showPosts(controller._photoList._getPosts());
-            controller._alreadyShown = 10;
+            controller._alreadyShown = DEFAULT_AMNT_OF_POSTS;
             localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
+
+            controller._formWrapper.style.display = 'none';
+            addForm.style.display = 'none';
         }
         else {
             alert('Failed to add post.');
         }
-
-        controller._formWrapper.style.display = 'none';
-        addForm.style.display = 'none';
     }
 
     static _showLoginForm() {
@@ -317,7 +326,7 @@ class Controller {
         controller._view._showHeader();
         controller._view._clearPosts();
         Controller._showPosts();
-        controller._alreadyShown = 10;
+        controller._alreadyShown = DEFAULT_AMNT_OF_POSTS;
         localStorage.setItem('username', username);
     }
 
@@ -325,7 +334,7 @@ class Controller {
         controller._view._logout();
         controller._view._clearPosts();
         Controller._showPosts();
-        controller._alreadyShown = 10;
+        controller._alreadyShown = DEFAULT_AMNT_OF_POSTS;
         localStorage.removeItem('username');
     }
 
@@ -345,13 +354,20 @@ class Controller {
         const postObject = {};
         postObject.photoLink = editForm.querySelector('#add-edit_image-url').value;
         postObject.description = editForm.querySelector('#add-edit_description').value;
-        postObject.hashTags = editForm.querySelector('#add-edit_hashTags').value.trim().substring(1).split(/[ #]+/);
+        const hashTagsString = editForm.querySelector('#add-edit_hashTags').value.trim().substring(1);
+        if (hashTagsString) {
+            postObject.hashTags = hashTagsString.split(/[ #]+/);
+        }
+        else {
+            postObject.hashTags = [];
+        }
 
         if(controller._photoList._edit(`_${editForm.id}`, postObject)) {
             controller._view._editPost(`_${editForm.id}`, postObject);
+            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
+
             editForm.style.display = 'none';
             controller._formWrapper.style.display = 'none';
-            localStorage.setItem('posts', JSON.stringify(controller._photoList._posts));
         }
         else {
             alert('Failed to edit post.');
@@ -389,7 +405,15 @@ class Controller {
             form.querySelector('.add-edit_form__author').firstChild.textContent = post.author;
             const inputImage = form.querySelector('#add-edit_image-url');
             inputImage.value = post.photoLink;
-            form.querySelector('#add-edit_hashTags').value = '#' + post.hashTags.join(' #');
+
+            if (post.hashTags.length !== 0) {
+                form.querySelector('#add-edit_hashTags').value = '#' + post.hashTags.join(' #');
+            }
+            else {
+                form.querySelector('#add-edit_hashTags').value = '';
+            }
+
+
             form.querySelector('#add-edit_description').value = post.description;
 
             form.querySelector('.add_form__submit').style.display = 'none';
