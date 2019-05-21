@@ -279,9 +279,12 @@ class Controller {
         post.author = controller._view._user;
         post.photoLink = addForm.querySelector('#add-edit_image-url').value;
 
-        post.hashTags = addForm.querySelector('#add-edit_hashTags').value.trim().substring(1);
-        if (post.hashTags) {
-            post.hashTags = hashTagsString.split(/[ #]+/);
+        post.hashTags = addForm.querySelector('#add-edit_hashTags').value.trim();
+        if (post.hashTags.charAt(0) === '#') {
+            post.hashTags = post.hashTags.substring(1).split(/[ #]+/);
+        }
+        else if (post.hashTags) {
+            post.hashTags = post.hashTags.split(/[ #]+/);
         }
         else {
             post.hashTags = [];
