@@ -1,0 +1,91 @@
+<!doctype html>
+<head>
+    <title>Digal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="body">
+    <header class="header">
+        <div class="header__logo">
+            <a><img src="./images/logo.png" alt="Logo">Digal</a>
+        </div>
+        <div class=header__home>
+            <a><img src="./images/home.png" alt="Home"></a>
+        </div>
+        <div class="header__add-photo">
+            <a><img src="./images/add_photo.png" alt="Add new photo"></a>
+        </div>
+        <div class="header__user">
+            <p class="header__username"></p>
+            <a><img src="./images/log_out.png" alt="Log out"></a>
+        </div>
+        <div class="header__login">
+            <p>Sign in</p><input type="image" src='./images/sign_in.png' alt="Login">
+        </div>
+    </header>
+    <main class="main">
+        <input class="search-checkbox" type="checkbox" id="search">
+        <label class="search-label" for="search"><img src="./images/search.png"></label>
+        <aside class="search-popup">
+            <p class="search-popup__header">Find by:</p>
+            <input class="search-popup__author-input" type="text" placeholder="author">
+            <input class="search-popup__hashtags-input" type="text" placeholder="hashtags">
+            <p class="search-popup__date">Date:</p>
+            <p class="date__from-till_paragraph">from</p>
+            <input class="search-popup__date-from-input" type="date" placeholder="from">
+            <p class="date__from-till_paragraph">till</p>
+            <input class="search-popup__date-till-input" type="date" placeholder="till">
+            <input class="search-popup__search-button" type="button" value="Search">
+        </aside>
+        <div class="form-wrapper">
+            <div class="login-form">
+                <h2>Authorization</h2>
+                <a class="login-form__close-button"><img src="./images/close_form.png"></a>
+                <input class="login-form__username" type="text" placeholder="login">
+                <input class="login-form__password" type="password" placeholder="password">
+                <button class="login-form__submit" type="submit">Log in</button>
+            </div>
+            <div class="add-edit_form">
+                <div class="add-edit_form__image">
+                    <img src="">
+                </div>
+                <div class="add-edit_form__right">
+                    <div class="add-edit_form__author"><h3></h3></div>
+                    <a class="add-edit_form__close-button"><img src="./images/close_form.png"></a>
+                    <div class="add-edit_form__details">
+                        <p>Image(press Enter to show picture):</p>
+                        <input id="add-edit_image-url" type="text" placeholder="new image's URL">
+                        <p>Hashtags:</p>
+                        <input id="add-edit_hashTags" type="text" placeholder="hashTags">
+                        <p>Description:</p>
+                        <input id="add-edit_description" type="text" placeholder="description">
+                        <button class="edit_form__submit" type="submit">Confirm changes</button>
+                        <button class="add_form__submit" type="submit">Create photopost</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main__publications">
+        </div>
+        <input class="show-more-posts" type="button" value="Show more">
+    </main>
+    <footer class="footer">
+        <div class="footer__portal-name">
+            <p>Digal</p>
+        </div>
+        <div>
+            <p>Metelskiy Dmitriy</p>
+        </div>
+        <div>
+            <p>2nd course 5th group</p>
+        </div>
+        <div>
+            <p>e-mail: dmitriy_metelskiy@mail.ru</p>
+        </div>
+        <div class="portal-last-update">
+            <p>Last update: 02:00 07.04.2019</p>
+        </div>
+    </footer>
+    <script src="./posts.js"></script>
+    <script src="./view.js"></script>
+    <script src="./script.js"></script>
+</body>
